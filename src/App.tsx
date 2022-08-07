@@ -1,32 +1,24 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
-
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
+    <div className='w-screen h-screen flex flex-col items-center bg-slate-800'>
+      <details open className='text-2xl text-center text-white'>
+        <summary>Info and Settings</summary>
+        <div className='text-sm text-white'>
+          <p>This app allows you to enter information about your roster and provide etas for goals you set.
+            There are a few important things to note:
+          </p>
+          <ul className='list-disc list-inside'>
+            <li>The app uses local storage for saving settings and custom goals.</li>
+            <li>By default, it is assumed you run the highest guardian raids possible.</li>
+            <li>Link at bottom to source code on GitHub. License is GNU GPL v3.0</li>
+          </ul>
+        </div>
+        <div className='text-sm text-white'>
+
+        </div>
+      </details>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </div>
   )
 }
