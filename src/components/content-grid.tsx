@@ -8,8 +8,8 @@ export default function ContentGrid() {
         <div>Item Level: INPUT FIELD</div>
         <div>x NUM VALUE</div>
         <div>Rested?</div>
-        <div>-</div>
-        <div>+</div>
+        <div>Toggle for Rested</div>
+        <div>Add character</div>
       </ul>
     </div>
   );
