@@ -1,4 +1,4 @@
-export default function Example() {
+export default function Footer() {
   return (
     //This className sets the footer to the bottom of the page.
     <footer className='fixed inset-x-0 bottom-0'>
