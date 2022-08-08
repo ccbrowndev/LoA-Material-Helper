@@ -1,12 +1,10 @@
 import Divider from "./components/divider";
-import Hello from "./components/hello";
-import Settings from "./components/settings";
-import Test from "./components/testing";
+import Settings from "./components/latest";
 
 function App(): JSX.Element {
   return (
-    <div className=''>
-      <Test />
+    <div className='max-w-5xl mx-auto px-4 pt-2 sm:px-6 lg:px-8'>
+      <Settings />
       <Divider />
     </div>
   );
