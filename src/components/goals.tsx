@@ -2,7 +2,7 @@ export default function Goals() {
     return (
         <div className="pb-6 sm:px-6 lg:px-8 h-auto text-white text-center">
             <details open>
-                <summary className="text-2xl font-bold tracking-tight hover:cursor-pointer">Goals</summary>
+                <summary className="text-2xl font-bold tracking-tight hover:cursor-pointer pb-4">Goals</summary>
                 <div>
                     <label>
                         Select a goal:
