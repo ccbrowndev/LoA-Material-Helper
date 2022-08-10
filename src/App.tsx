@@ -2,6 +2,7 @@ import Divider from "./components/divider";
 import Settings from "./components/settings";
 import Footer from "./components/footer";
 import ContentGrid from "./components/content-grid";
+import Goals from "./components/goals";
 
 export default function App(): JSX.Element {
   return (
@@ -10,6 +11,7 @@ export default function App(): JSX.Element {
       <Divider />
       <ContentGrid />
       <Divider />
+      <Goals />
       <Footer />
     </div>
   );
