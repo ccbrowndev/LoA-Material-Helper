@@ -10,18 +10,15 @@ export default function Settings() {
           This app allows you to enter information about your roster and provide
           ETAs for goals you set.
           <br />
-          There are a few important things to note:
+          Please note:
         </p>
         <ul className='list-disc list-inside text-white text-sm'>
-          <li>
-            The app uses local storage for saving settings and custom goals.
-          </li>
           <li>
             By default, it is assumed you run the highest guardian raids
             possible.
           </li>
           <li>
-            Link at bottom to source code on GitHub. License is GNU GPL v3.0
+            The app uses local storage for saving settings and custom goals.
           </li>
         </ul>
       </details>
