@@ -1,6 +1,4 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Disclosure } from "@headlessui/react";
-
 export default function Settings() {
   return (
     <div className=' pb-6 sm:px-6 lg:px-8 h-auto text-white text-center'>
@@ -9,8 +7,8 @@ export default function Settings() {
           Info & Settings
         </summary>
         <p className=' text-lg text-white'>
-          This app allows you to enter information about your roster and
-          provide ETAs for goals you set.
+          This app allows you to enter information about your roster and provide
+          ETAs for goals you set.
           <br />
           There are a few important things to note:
         </p>

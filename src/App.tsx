@@ -11,7 +11,7 @@ export default function App(): JSX.Element {
       <Settings />
       <Divider />
       <Roster />
-      <Divider />
+      {/* <Divider /> */}
       <Goals />
       <Footer />
     </div>
