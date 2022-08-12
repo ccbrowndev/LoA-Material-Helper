@@ -80,15 +80,13 @@ export function CharacterForm(props: { onSubmit: (iLevel: string) => void }) {
         </div>
       </form>
       <ul role='list' className='grid grid-row-5 gap-6 pb-5'>
-        <li>
-          {characterArray.map((character: Character) => (
-            <UserCharacter
-              iLevel={character.iLevel}
-              amount={character.amount}
-              rested={character.rested}
-            />
-          ))}
-        </li>
+        {characterArray.map((character: Character) => (
+          <UserCharacter
+            iLevel={character.iLevel}
+            amount={character.amount}
+            rested={character.rested}
+          />
+        ))}
       </ul>
     </>
   );
