@@ -1,29 +1,26 @@
-// Needs work
-
-import { PlusCircleIcon } from "@heroicons/react/solid";
 import { useState } from "react";
 import { Character } from "../types/character";
 import { convertToLevel } from "../utils/levelConverter";
 
 export function CharacterForm(props: { onSubmit: (iLevel: string) => void }) {
-  function ihandleSubmit(
-    level: number,
-    amount: number,
-    rested: boolean
-  ): Character {
-    return {
-      iLevel: convertToLevel(level),
-      amount: amount,
-      rested: rested,
-    };
-  }
+  // function ihandleSubmit(
+  //   level: number,
+  //   amount: number,
+  //   rested: boolean
+  // ): Character {
+  //   return {
+  //     iLevel: convertToLevel(level),
+  //     amount: amount,
+  //     rested: rested,
+  //   };
+  // }
 
-  const [level, setLevel] = useState<number>(1335);
-  const [amount, setAmount] = useState<number>(2);
+  const [level, setLevel] = useState("");
+  const [amount, setAmount] = useState("");
   const [rested, setRested] = useState(true);
 
-  const handleSubmit = (evt: { preventDefault: () => void }) => {
-    evt.preventDefault();
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
     alert(`iLevel: ${level}, amount: ${amount}, rested: ${rested}`);
   };
   return (
@@ -37,6 +34,7 @@ export function CharacterForm(props: { onSubmit: (iLevel: string) => void }) {
           type='text'
           placeholder='Item Level'
           value={level}
+          onChange={(e) => setLevel(e.target.value)}
         />
       </div>
       <div>
@@ -45,12 +43,20 @@ export function CharacterForm(props: { onSubmit: (iLevel: string) => void }) {
           className='w-1/2 text-black'
           placeholder='#'
           value={amount}
+          onChange={(e) => {
+            const result = e.target.value.replace(/\D/g, "");
+            setAmount(result);
+          }}
         />
       </div>
       <div>
         <label>
           Rested?
-          <input type='checkbox' className='mx-4' value={rested} />
+          <input
+            type='checkbox'
+            className='mx-4'
+            onChange={(e) => setRested(e.target.checked)}
+          />
         </label>
       </div>
       <div>
@@ -66,7 +72,7 @@ export function CharacterForm(props: { onSubmit: (iLevel: string) => void }) {
     // <form onSubmit={handleSubmit} className='text-amber-500'>
     //   <label>
     //     iLevel:
-    //     <input type='text' value={level} />
+    //     <input type='text' name='iLevel' value={level} />
     //   </label>
     //   <input type='submit' value='Submit' />
     // </form>
