@@ -13,24 +13,11 @@ export default function Roster() {
           Add to Roster
         </summary>
         {/* Input row */}
-        <CharacterForm />
-
-        {/* User characters */}
-        <ul role='list' className='grid grid-row-5 gap-6 pb-5'>
-          <li>
-            <UserCharacter iLevel={{ number: 1355 }} amount={1} rested={true} />
-          </li>
-          <li>
-            <UserCharacter
-              iLevel={{ number: 1355 }}
-              amount={3}
-              rested={false}
-            />
-          </li>
-          <li>
-            <UserCharacter iLevel={{ number: 1355 }} amount={1} rested={true} />
-          </li>
-        </ul>
+        <CharacterForm
+          onSubmit={function (iLevel: string): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
       </details>
     </div>
   );
