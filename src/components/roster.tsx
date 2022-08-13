@@ -1,8 +1,3 @@
-import Divider from "./divider";
-import UserCharacter from "./userCharacter";
-import { FingerPrintIcon, PlusCircleIcon } from "@heroicons/react/solid";
-import { useState } from "react";
-import { Character, Level } from "../types/character";
 import { CharacterForm } from "./characterForm";
 
 export default function Roster() {
