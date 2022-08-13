@@ -17,10 +17,16 @@ export function CharacterForm() {
         iLevel: convertToLevel(parseInt(level)),
         amount: parseInt(amount),
         rested: rested,
+        id: characterArray.length,
       },
     ]);
   };
-  console.log(rested);
+
+  const handleRemove = (id: number) => {
+    setCharacterArray(
+      characterArray.filter((character) => character.id !== id)
+    );
+  };
   return (
     <>
       <form
@@ -59,7 +65,7 @@ export function CharacterForm() {
             />
           </label>
         </div>
-        <div>
+        <div className='border px-3 py-1 rounded-xl bg-slate-600 hover:bg-slate-800 text-white font-bold'>
           <label>
             <input
               type='submit'
@@ -69,11 +75,12 @@ export function CharacterForm() {
           </label>
         </div>
       </form>
-      <ul role='list' className='grid grid-row-5 gap-6 pb-5'>
+      <ul role='list' className='grid grid-row-5 gap-2 pb-5'>
         {characterArray.map((character: Character) => (
           <UserCharacter
             //TODO: add some key value in type definition
-            key={character.iLevel.number}
+            key={character.id}
+            id={character.id}
             iLevel={character.iLevel}
             amount={character.amount ? character.amount : 1}
             rested={character.rested}
