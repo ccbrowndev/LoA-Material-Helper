@@ -6,7 +6,7 @@ import UserCharacter from "./userCharacter";
 export function CharacterForm() {
   const [level, setLevel] = useState("");
   const [amount, setAmount] = useState("");
-  const [rested, setRested] = useState(true);
+  const [rested, setRested] = useState(false);
   const [characterArray, setCharacterArray] = useState<Character[]>([]);
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
@@ -55,7 +55,7 @@ export function CharacterForm() {
               type='checkbox'
               className='mx-4'
               about='Rested'
-              onChange={(e) => setRested(!e.target.checked)}
+              onChange={(e) => setRested(e.target.checked)}
             />
           </label>
         </div>
@@ -76,7 +76,7 @@ export function CharacterForm() {
             key={character.iLevel.number}
             iLevel={character.iLevel}
             amount={character.amount ? character.amount : 1}
-            rested={!character.rested}
+            rested={character.rested}
           />
         ))}
       </ul>
