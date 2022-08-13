@@ -4,18 +4,6 @@ import { convertToLevel } from "../utils/levelConverter";
 import UserCharacter from "./userCharacter";
 
 export function CharacterForm() {
-  // function ihandleSubmit(
-  //   level: number,
-  //   amount: number,
-  //   rested: boolean
-  // ): Character {
-  //   return {
-  //     iLevel: convertToLevel(level),
-  //     amount: amount,
-  //     rested: rested,
-  //   };
-  // }
-
   const [level, setLevel] = useState("");
   const [amount, setAmount] = useState("");
   const [rested, setRested] = useState(true);
@@ -32,6 +20,7 @@ export function CharacterForm() {
       },
     ]);
   };
+  console.log(rested);
   return (
     <>
       <form
@@ -65,7 +54,8 @@ export function CharacterForm() {
             <input
               type='checkbox'
               className='mx-4'
-              onChange={(e) => setRested(e.target.checked)}
+              about='Rested'
+              onChange={(e) => setRested(!e.target.checked)}
             />
           </label>
         </div>
@@ -82,9 +72,11 @@ export function CharacterForm() {
       <ul role='list' className='grid grid-row-5 gap-6 pb-5'>
         {characterArray.map((character: Character) => (
           <UserCharacter
+            //TODO: add some key value in type definition
+            key={character.iLevel.number}
             iLevel={character.iLevel}
-            amount={character.amount}
-            rested={character.rested}
+            amount={character.amount ? character.amount : 1}
+            rested={!character.rested}
           />
         ))}
       </ul>
