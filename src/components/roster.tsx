@@ -13,11 +13,7 @@ export default function Roster() {
           Add to Roster
         </summary>
         {/* Input row */}
-        <CharacterForm
-          onSubmit={function (iLevel: string): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
+        <CharacterForm />
       </details>
     </div>
   );

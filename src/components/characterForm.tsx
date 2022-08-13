@@ -3,7 +3,7 @@ import { Character } from "../types/character";
 import { convertToLevel } from "../utils/levelConverter";
 import UserCharacter from "./userCharacter";
 
-export function CharacterForm(props: { onSubmit: (iLevel: string) => void }) {
+export function CharacterForm() {
   // function ihandleSubmit(
   //   level: number,
   //   amount: number,
