@@ -1,7 +1,6 @@
 import Divider from "./components/divider";
 import Settings from "./components/settings";
 import Footer from "./components/footer";
-import ContentGrid from "./components/content-grid";
 import Goals from "./components/goals";
 import Roster from "./components/roster";
 

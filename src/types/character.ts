@@ -3,6 +3,7 @@ export type Level = {
 };
 
 export type Character = {
+  id: number;
   iLevel: Level;
   amount: number;
   rested: boolean;

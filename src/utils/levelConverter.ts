@@ -4,6 +4,7 @@ export function convertToLevel(level: number): Level {
   let newLevel: Level = { number: 1325 };
   switch (true) {
     case level < 1325:
+      alert("This tool is designed for characters iLevel 1325 and above");
       throw new Error(
         "This tool is designed for characters iLevel 1325 and above"
       );
