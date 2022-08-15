@@ -1,14 +1,16 @@
 import { MinusIcon, PlusIcon } from "@heroicons/react/solid";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Character } from "../types/character";
 import { convertToLevel } from "../utils/levelConverter";
 import UserCharacter from "./userCharacter";
+import autoAnimate from "@formkit/auto-animate";
 
 export function CharacterForm() {
   const [level, setLevel] = useState("");
   const [amount, setAmount] = useState("");
   const [rested, setRested] = useState(false);
   const [characterArray, setCharacterArray] = useState<Character[]>([]);
+  const parent = useRef(null);
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -22,6 +24,10 @@ export function CharacterForm() {
       },
     ]);
   };
+
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current);
+  }, [parent]);
 
   const handleDelete = (id: number) => {
     setCharacterArray(
@@ -98,13 +104,14 @@ export function CharacterForm() {
         </div>
       </form>
       <ul
+        ref={parent}
         role='list'
         className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'
       >
         {characterArray.map((character: Character) => (
           <li
             key={character.id}
-            className='col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200 overflow-hidden'
+            className=' bg-white rounded-lg shadow divide-y divide-gray-200 overflow-hidden'
           >
             <UserCharacter
               id={character.id}
