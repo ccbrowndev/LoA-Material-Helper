@@ -35,6 +35,25 @@ export function CharacterForm() {
     );
   };
 
+  const handleMinus = (amount: number, id: number) => {
+    if (amount === 1) {handleDelete(id)}
+    if (amount > 1) {handleDecrease(id)}
+  }
+
+  const handleDecrease = (id: number) => {
+    setCharacterArray(
+      characterArray.map((character) => {
+        if (character.id === id) {
+          return {
+            ...character,
+            amount: character.amount - 1,
+          };
+        }
+        return character;
+      })
+    );
+  };
+
   //This function will pass in the character array and the id of the character to have their amount increased by 1
   const handleIncrease = (id: number) => {
     setCharacterArray(
@@ -121,7 +140,7 @@ export function CharacterForm() {
             />
             <div className='-mt-px flex divide-x divide-gray-300'>
               <button
-                onClick={() => handleDelete(character.id)}
+                onClick={() => handleMinus(character.amount, character.id)}
                 className='w-0 flex-1 flex cursor-pointer'
               >
                 <div className='relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500 hover:bg-slate-300'>
