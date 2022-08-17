@@ -7,7 +7,7 @@ import autoAnimate from "@formkit/auto-animate";
 
 export function CharacterForm() {
   const [level, setLevel] = useState("");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState("1");
   const [rested, setRested] = useState(false);
   const [characterArray, setCharacterArray] = useState<Character[]>([]);
   const parent = useRef(null);
