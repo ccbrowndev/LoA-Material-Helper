@@ -7,7 +7,7 @@ import autoAnimate from "@formkit/auto-animate";
 
 export function CharacterForm() {
   const [level, setLevel] = useState("");
-  const [amount, setAmount] = useState("1");
+  const [amount, setAmount] = useState("");
   const [rested, setRested] = useState(false);
   const [characterArray, setCharacterArray] = useState<Character[]>([]);
   const parent = useRef(null);
@@ -18,7 +18,7 @@ export function CharacterForm() {
       ...characterArray,
       {
         iLevel: convertToLevel(parseInt(level)),
-        amount: parseInt(amount),
+        amount: parseInt(amount) ? NaN : 1,
         rested: rested,
         id: generateId(),
       },
