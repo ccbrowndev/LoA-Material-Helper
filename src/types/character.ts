@@ -7,4 +7,10 @@ export type Character = {
   iLevel: Level;
   amount: number;
   rested: boolean;
+  totalMaterials?: {
+    totalReds: number;
+    totalBlues: number;
+    totalLeaps: number;
+    totalShards: number;
+  };
 };
