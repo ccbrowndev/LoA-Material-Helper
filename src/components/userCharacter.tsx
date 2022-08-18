@@ -5,7 +5,6 @@ export default function UserCharacter(character: Character): JSX.Element {
     <div className=''>
       <div className='flex-1 truncate w-fit border-slate-700 border-2 p-1.5 -m-1.5 rounded-lg'>
         <div className='flex items-center space-x-1'>
-          {" "}
           <span
             className={`flex-shrink-0 inline-block px-2 py-0.5 text-white text-xs font-medium rounded-full
             ${character.iLevel.number <= 1355 ? "bg-purple-500" : ""}

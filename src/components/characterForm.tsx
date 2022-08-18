@@ -1,15 +1,19 @@
 import { MinusIcon, PlusIcon } from "@heroicons/react/solid";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import { Character } from "../types/character";
 import { convertToLevel } from "../utils/levelConverter";
 import UserCharacter from "./userCharacter";
 import autoAnimate from "@formkit/auto-animate";
+import { CharacterContext } from "../App";
 
-export function CharacterForm() {
+export const CharacterForm = () => {
+  const [characterArray, setCharacterArray] = useState(
+    useContext(CharacterContext)
+  );
+
   const [level, setLevel] = useState("");
   const [amount, setAmount] = useState("");
   const [rested, setRested] = useState(false);
-  const [characterArray, setCharacterArray] = useState<Character[]>([]);
   const parent = useRef(null);
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
@@ -36,9 +40,13 @@ export function CharacterForm() {
   };
 
   const handleMinus = (amount: number, id: number) => {
-    if (amount === 1) {handleDelete(id)}
-    if (amount > 1) {handleDecrease(id)}
-  }
+    if (amount === 1) {
+      handleDelete(id);
+    }
+    if (amount > 1) {
+      handleDecrease(id);
+    }
+  };
 
   const handleDecrease = (id: number) => {
     setCharacterArray(
@@ -169,4 +177,4 @@ export function CharacterForm() {
       </ul>
     </div>
   );
-}
+};
