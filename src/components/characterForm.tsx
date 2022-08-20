@@ -12,7 +12,7 @@ export const CharacterForm = () => {
   );
 
   const [level, setLevel] = useState("");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState("1");
   const [rested, setRested] = useState(false);
   const parent = useRef(null);
 
@@ -22,7 +22,7 @@ export const CharacterForm = () => {
       ...characterArray,
       {
         iLevel: convertToLevel(parseInt(level)),
-        amount: parseInt(amount) ? NaN : 1,
+        amount: parseInt(amount),
         rested: rested,
         id: generateId(),
       },
@@ -33,12 +33,6 @@ export const CharacterForm = () => {
     parent.current && autoAnimate(parent.current);
   }, [parent]);
 
-  const handleDelete = (id: number) => {
-    setCharacterArray(
-      characterArray.filter((character) => character.id !== id)
-    );
-  };
-
   const handleMinus = (amount: number, id: number) => {
     if (amount === 1) {
       handleDelete(id);
@@ -46,6 +40,11 @@ export const CharacterForm = () => {
     if (amount > 1) {
       handleDecrease(id);
     }
+  };
+  const handleDelete = (id: number) => {
+    setCharacterArray(
+      characterArray.filter((character) => character.id !== id)
+    );
   };
 
   const handleDecrease = (id: number) => {
@@ -94,7 +93,7 @@ export const CharacterForm = () => {
             type='text'
             placeholder='Item Level'
             value={level}
-            onChange={(e) => setLevel(e.target.value)}
+            onChange={(e) => setLevel(e.target.value.replace(/\D/g, ""))}
           />
         </div>
         <div>
