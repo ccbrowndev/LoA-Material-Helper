@@ -29,8 +29,11 @@ export function convertToLevel(level: number): Level {
     case level >= 1415 && level < 1445:
       newLevel = { number: 1415 };
       break;
-    case level >= 1445 && level < 1475:
+    case level >= 1445 && level < 1460:
       newLevel = { number: 1445 };
+      break;
+    case level >= 1460 && level < 1475:
+      newLevel = { number: 1460 };
       break;
     case level >= 1475:
       newLevel = { number: 1475 };

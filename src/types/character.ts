@@ -1,5 +1,5 @@
 export type Level = {
-  number: 1325 | 1340 | 1355 | 1370 | 1385 | 1400 | 1415 | 1445 | 1475;
+  number: 1325 | 1340 | 1355 | 1370 | 1385 | 1400 | 1415 | 1445 | 1460 | 1475;
 };
 
 export type Character = {
@@ -7,4 +7,15 @@ export type Character = {
   iLevel: Level;
   amount: number;
   rested: boolean;
+  totalMaterials?: {
+    totalReds: number;
+    totalBlues: number;
+    totalLeaps: number;
+    totalShards: number;
+  };
 };
+
+export interface CharacterArrayData {
+  characterArray: Character[];
+  setCharacterArray: React.Dispatch<React.SetStateAction<Character[]>>;
+}
