@@ -34,19 +34,27 @@ export const CharacterForm = () => {
       guardianLeaps: 0,
     };
 
-    setMaterials({
-      totalReds: materials.chaosReds + materials.guardianReds,
-      totalBlues: materials.chaosBlues + materials.guardianBlues,
-      totalLeaps: materials.chaosLeaps + materials.guardianLeaps,
-      totalShards: materials.shards,
-    });
+    const reds = materials.chaosReds + materials.guardianReds
+    const blues = materials.chaosBlues + materials.guardianBlues
+    const leaps = materials.chaosLeaps + materials.guardianLeaps
+    const shards = materials.shards
+
+    setMaterials(materials => ({
+      totalReds: reds,
+      totalBlues: blues,
+      totalLeaps: leaps,
+      totalShards: shards,
+    }));
+
+    return ([reds, blues, leaps, shards])
   }
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    debugger;
     const parsedLevel = convertToLevel(parseInt(level));
     const cid = generateId();
-    getMaterials(parsedLevel.number);
+    const mats = getMaterials(parsedLevel.number);
     setCharacterArray([
       ...characterArray,
       {
@@ -55,10 +63,10 @@ export const CharacterForm = () => {
         rested: rested,
         id: cid,
         totalMaterials: {
-          totalReds: materials.totalReds,
-          totalBlues: materials.totalBlues,
-          totalLeaps: materials.totalLeaps,
-          totalShards: materials.totalShards,
+          totalReds: mats[0],
+          totalBlues: mats[1],
+          totalLeaps: mats[2],
+          totalShards: mats[3],
         },
       },
     ]);
