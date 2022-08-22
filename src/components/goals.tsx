@@ -20,11 +20,29 @@ export default function Goals() {
               <option value='custom'>Custom goal</option>
             </select>
           </label>
-          <div>
-            <span>
+          <div className=''>
+            <span className='p-4'>
               Total reds:{" "}
               {characterArray.reduce((acc, curr) => {
-                return acc + curr.totalMaterials.totalReds;
+                return acc + curr.totalMaterials.totalReds * curr.amount;
+              }, 0)}
+            </span>
+            <span className='p-4'>
+              Total blues:{" "}
+              {characterArray.reduce((acc, curr) => {
+                return acc + curr.totalMaterials.totalBlues * curr.amount;
+              }, 0)}
+            </span>
+            <span className='p-4'>
+              Total Leaps:{" "}
+              {characterArray.reduce((acc, curr) => {
+                return acc + curr.totalMaterials.totalLeaps * curr.amount;
+              }, 0)}
+            </span>
+            <span className='p-4'>
+              Total Shards:{" "}
+              {characterArray.reduce((acc, curr) => {
+                return acc + curr.totalMaterials.totalShards * curr.amount;
               }, 0)}
             </span>
           </div>

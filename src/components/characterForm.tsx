@@ -13,7 +13,7 @@ export const CharacterForm = () => {
   const [level, setLevel] = useState("");
   const [amount, setAmount] = useState("1");
   const [rested, setRested] = useState(false);
-  const [materials, setMaterials] = useState({
+  const [materialState, setMaterialState] = useState({
     totalReds: 0,
     totalBlues: 0,
     totalLeaps: 0,
@@ -37,7 +37,7 @@ export const CharacterForm = () => {
     const leaps = materials.chaosLeaps + materials.guardianLeaps;
     const shards = materials.shards;
 
-    setMaterials((materials) => ({
+    setMaterialState(() => ({
       totalReds: reds,
       totalBlues: blues,
       totalLeaps: leaps,
@@ -49,10 +49,10 @@ export const CharacterForm = () => {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    debugger;
     const parsedLevel = convertToLevel(parseInt(level));
     const cid = generateId();
     const mats = getMaterials(parsedLevel.number);
+    console.log(mats);
     setCharacterArray([
       ...characterArray,
       {
@@ -70,20 +70,6 @@ export const CharacterForm = () => {
     ]);
     console.log(characterArray.length);
   };
-
-  // function handleMaterials(totalMaterials: {
-  //   totalReds: number;
-  //   totalBlues: number;
-  //   totalLeaps: number;
-  //   totalShards: number;
-  // }) {
-  //   setMaterials({
-  //     totalReds: materials.totalReds + totalMaterials.totalReds,
-  //     totalBlues: materials.totalBlues + totalMaterials.totalBlues,
-  //     totalLeaps: materials.totalLeaps + totalMaterials.totalLeaps,
-  //     totalShards: materials.totalShards + totalMaterials.totalShards,
-  //   });
-  // }
 
   useEffect(() => {
     parent.current && autoAnimate(parent.current);
@@ -149,7 +135,7 @@ export const CharacterForm = () => {
             type='text'
             placeholder='Item Level'
             value={level}
-            onChange={(e) => setLevel(e.target.value.replace(/\D/g, ""))}
+            onChange={(e) => setLevel(e.target.value.replace(/[^\d.]/g, ""))}
           />
         </div>
         <div>
