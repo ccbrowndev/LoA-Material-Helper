@@ -1,4 +1,3 @@
-/* This example requires Tailwind CSS v2.0+ */
 export default function Settings() {
   return (
     <div className=' pb-6 sm:px-6 lg:px-8 h-auto text-white text-center'>

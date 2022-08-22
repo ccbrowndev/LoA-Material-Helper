@@ -8,9 +8,7 @@ import { CharacterContext } from "../App";
 import { materialData } from "../utils/materialData";
 
 export const CharacterForm = () => {
-  const [characterArray, setCharacterArray] = useState(
-    useContext(CharacterContext)
-  );
+  const { characterArray, setCharacterArray } = useContext(CharacterContext);
 
   const [level, setLevel] = useState("");
   const [amount, setAmount] = useState("1");
@@ -34,19 +32,19 @@ export const CharacterForm = () => {
       guardianLeaps: 0,
     };
 
-    const reds = materials.chaosReds + materials.guardianReds
-    const blues = materials.chaosBlues + materials.guardianBlues
-    const leaps = materials.chaosLeaps + materials.guardianLeaps
-    const shards = materials.shards
+    const reds = materials.chaosReds + materials.guardianReds;
+    const blues = materials.chaosBlues + materials.guardianBlues;
+    const leaps = materials.chaosLeaps + materials.guardianLeaps;
+    const shards = materials.shards;
 
-    setMaterials(materials => ({
+    setMaterials((materials) => ({
       totalReds: reds,
       totalBlues: blues,
       totalLeaps: leaps,
       totalShards: shards,
     }));
 
-    return ([reds, blues, leaps, shards])
+    return [reds, blues, leaps, shards];
   }
 
   const handleSubmit = (e: { preventDefault: () => void }) => {

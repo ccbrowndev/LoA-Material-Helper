@@ -14,8 +14,3 @@ export type Character = {
     totalShards: number;
   };
 };
-
-export interface CharacterArrayData {
-  characterArray: Character[];
-  setCharacterArray: React.Dispatch<React.SetStateAction<Character[]>>;
-}
