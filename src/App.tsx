@@ -4,17 +4,20 @@ import Footer from "./components/footer";
 import Goals from "./components/goals";
 import Roster from "./components/roster";
 import { Character } from "./types/character";
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
-const characterArray: Character[] = [];
-export const CharacterContext = createContext(characterArray);
+export const CharacterContext = createContext({
+  characterArray: Array<Character>(),
+  setCharacterArray: (characterArray: Character[]) => {},
+});
 
 export default function App(): JSX.Element {
+  const [characterArray, setCharacterArray] = useState<Character[]>([]);
   return (
     <div className='max-w-5xl mx-auto px-4 pt-2 sm:px-6 lg:px-8'>
       <Settings />
       <Divider />
-      <CharacterContext.Provider value={characterArray}>
+      <CharacterContext.Provider value={{ characterArray, setCharacterArray }}>
         <Roster />
         {/* <Divider /> */}
         <Goals />

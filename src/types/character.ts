@@ -7,15 +7,10 @@ export type Character = {
   iLevel: Level;
   amount: number;
   rested: boolean;
-  totalMaterials?: {
+  totalMaterials: {
     totalReds: number;
     totalBlues: number;
     totalLeaps: number;
     totalShards: number;
   };
 };
-
-export interface CharacterArrayData {
-  characterArray: Character[];
-  setCharacterArray: React.Dispatch<React.SetStateAction<Character[]>>;
-}

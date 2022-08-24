@@ -5,28 +5,70 @@ import { convertToLevel } from "../utils/levelConverter";
 import UserCharacter from "./userCharacter";
 import autoAnimate from "@formkit/auto-animate";
 import { CharacterContext } from "../App";
+import { materialData } from "../utils/materialData";
 
 export const CharacterForm = () => {
-  const [characterArray, setCharacterArray] = useState(
-    useContext(CharacterContext)
-  );
+  const { characterArray, setCharacterArray } = useContext(CharacterContext);
 
   const [level, setLevel] = useState("");
   const [amount, setAmount] = useState("1");
   const [rested, setRested] = useState(false);
+  const [materialState, setMaterialState] = useState({
+    totalReds: 0,
+    totalBlues: 0,
+    totalLeaps: 0,
+    totalShards: 0,
+  });
   const parent = useRef(null);
+
+  function getMaterials(charLevel: number) {
+    const materials = materialData.get(charLevel) || {
+      chaosReds: 0,
+      chaosBlues: 0,
+      chaosLeaps: 0,
+      shards: 0,
+      guardianReds: 0,
+      guardianBlues: 0,
+      guardianLeaps: 0,
+    };
+
+    const reds = materials.chaosReds + materials.guardianReds;
+    const blues = materials.chaosBlues + materials.guardianBlues;
+    const leaps = materials.chaosLeaps + materials.guardianLeaps;
+    const shards = materials.shards;
+
+    setMaterialState(() => ({
+      totalReds: reds,
+      totalBlues: blues,
+      totalLeaps: leaps,
+      totalShards: shards,
+    }));
+
+    return [reds, blues, leaps, shards];
+  }
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    const parsedLevel = convertToLevel(parseInt(level));
+    const cid = generateId();
+    const mats = getMaterials(parsedLevel.number);
+    console.log(mats);
     setCharacterArray([
       ...characterArray,
       {
-        iLevel: convertToLevel(parseInt(level)),
+        iLevel: parsedLevel,
         amount: parseInt(amount),
         rested: rested,
-        id: generateId(),
+        id: cid,
+        totalMaterials: {
+          totalReds: mats[0],
+          totalBlues: mats[1],
+          totalLeaps: mats[2],
+          totalShards: mats[3],
+        },
       },
     ]);
+    console.log(characterArray.length);
   };
 
   useEffect(() => {
@@ -93,7 +135,7 @@ export const CharacterForm = () => {
             type='text'
             placeholder='Item Level'
             value={level}
-            onChange={(e) => setLevel(e.target.value.replace(/\D/g, ""))}
+            onChange={(e) => setLevel(e.target.value.replace(/[^\d.]/g, ""))}
           />
         </div>
         <div>
@@ -144,6 +186,7 @@ export const CharacterForm = () => {
               iLevel={character.iLevel}
               amount={character.amount ? character.amount : 1}
               rested={character.rested}
+              totalMaterials={character.totalMaterials}
             />
             <div className='-mt-px flex divide-x divide-gray-300'>
               <button

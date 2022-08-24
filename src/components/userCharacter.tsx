@@ -30,10 +30,16 @@ export default function UserCharacter(character: Character): JSX.Element {
         </div>
       </div>
       <div className='text-black py-1'>
-        <div>Div go here to make card bigger</div>
-        <div>Div go here to make card bigger</div>
-        <div>Div go here to make card bigger</div>
-        <div>Div go here to make card bigger</div>
+        <div>Reds: {character.totalMaterials.totalReds * character.amount}</div>
+        <div>
+          Blues: {character.totalMaterials.totalBlues * character.amount}
+        </div>
+        <div>
+          Leaps: {character.totalMaterials.totalLeaps * character.amount}
+        </div>
+        <div>
+          Shards: {character.totalMaterials.totalShards * character.amount}
+        </div>
       </div>
     </div>
   );
