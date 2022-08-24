@@ -1,10 +1,57 @@
 import { Character } from "../types/character";
+import { MinusIcon, PlusIcon } from "@heroicons/react/solid";
+import { useContext } from "react";
+import { CharacterContext } from "../App";
 
-export default function UserCharacter(character: Character): JSX.Element {
+export default function UserCharacter(character: Character) {
+  const { characterArray, setCharacterArray } = useContext(CharacterContext);
+
+  const handleMinus = (amount: number, id: number) => {
+    if (amount === 1) {
+      handleDelete(id);
+    }
+    if (amount > 1) {
+      handleDecrease(id);
+    }
+  };
+  const handleDelete = (id: number) => {
+    setCharacterArray(
+      characterArray.filter((character) => character.id !== id)
+    );
+  };
+
+  const handleDecrease = (id: number) => {
+    setCharacterArray(
+      characterArray.map((character) => {
+        if (character.id === id) {
+          return {
+            ...character,
+            amount: character.amount - 1,
+          };
+        }
+        return character;
+      })
+    );
+  };
+
+  //This function will pass in the character array and the id of the character to have their amount increased by 1
+  const handleIncrease = (id: number) => {
+    setCharacterArray(
+      characterArray.map((character) => {
+        if (character.id === id) {
+          return {
+            ...character,
+            amount: character.amount + 1,
+          };
+        }
+        return character;
+      })
+    );
+  };
   return (
-    <div className=''>
-      <div className='flex-1 truncate w-fit border-slate-700 border-2 p-1.5 -m-1.5 rounded-lg'>
-        <div className='flex items-center space-x-1'>
+    <li key={character.id} className='rounded-lg bg-white overflow-hidden'>
+      <div className='flex-1 truncate w-fit col-span-3 p-1.5 -m-1.5 rounded-lg'>
+        <div className='flex items-center space-x-1 border-2 border-slate-700 p-1.5 -m-1.5 rounded-lg'>
           <span
             className={`flex-shrink-0 inline-block px-2 py-0.5 text-white text-xs font-medium rounded-full
             ${character.iLevel.number <= 1355 ? "bg-purple-500" : ""}
@@ -29,6 +76,9 @@ export default function UserCharacter(character: Character): JSX.Element {
           </span>
         </div>
       </div>
+      <div className=''>
+        <span className='text-black text-right'>meatball</span>
+      </div>
       <div className='text-black py-1'>
         <div>Reds: {character.totalMaterials.totalReds * character.amount}</div>
         <div>
@@ -41,6 +91,26 @@ export default function UserCharacter(character: Character): JSX.Element {
           Shards: {character.totalMaterials.totalShards * character.amount}
         </div>
       </div>
-    </div>
+      <div className='-mt-px flex divide-x border-t border-gray-500'>
+        <button
+          onClick={() => handleMinus(character.amount, character.id)}
+          className='w-0 flex-1 flex cursor-pointer'
+        >
+          <div className='relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500 hover:bg-slate-300'>
+            <MinusIcon className='w-5 h-5 text-gray-600' aria-hidden='true' />
+            <span className='ml-3'>Remove</span>
+          </div>
+        </button>
+        <button
+          onClick={() => handleIncrease(character.id)}
+          className='-ml-px w-0 flex-1 flex cursor-pointer'
+        >
+          <div className='relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-600 hover:bg-slate-300'>
+            <PlusIcon className='w-5 h-5 text-gray-600' aria-hidden='true' />
+            <span className='ml-3'>Add</span>
+          </div>
+        </button>
+      </div>
+    </li>
   );
 }

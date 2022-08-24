@@ -7,6 +7,7 @@ export type Character = {
   iLevel: Level;
   amount: number;
   rested: boolean;
+  isMain: boolean;
   totalMaterials: {
     totalReds: number;
     totalBlues: number;
