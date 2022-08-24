@@ -50,7 +50,7 @@ export default function UserCharacter(character: Character) {
   };
   return (
     <li key={character.id} className='rounded-lg bg-white overflow-hidden'>
-      <div className='flex-1 truncate w-fit col-span-3 p-1.5 -m-1.5 rounded-lg'>
+      <div className='flex justify-between'>
         <div className='flex items-center space-x-1 border-2 border-slate-700 p-1.5 -m-1.5 rounded-lg'>
           <span
             className={`flex-shrink-0 inline-block px-2 py-0.5 text-white text-xs font-medium rounded-full
@@ -75,9 +75,7 @@ export default function UserCharacter(character: Character) {
             {character.amount}
           </span>
         </div>
-      </div>
-      <div className=''>
-        <span className='text-black text-right'>meatball</span>
+        <span className="text-slate-400 hover:text-slate-700 active:text-black px-1.5">Goal Target</span>
       </div>
       <div className='text-black py-1'>
         <div>Reds: {character.totalMaterials.totalReds * character.amount}</div>
