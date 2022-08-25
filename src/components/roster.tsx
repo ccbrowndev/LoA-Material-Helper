@@ -1,6 +1,6 @@
 import { CharacterForm } from "./characterForm";
 
-export default function () {
+export default function Roster() {
   return (
     <div className='pb-6 sm:px-2 lg:px-8 h-auto text-white text-center'>
       <details open>
