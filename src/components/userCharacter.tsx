@@ -1,6 +1,6 @@
 import { Character } from "../types/character";
 import { MinusIcon, PlusIcon } from "@heroicons/react/solid";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CharacterContext } from "../App";
 
 export default function UserCharacter(character: Character) {
@@ -48,34 +48,73 @@ export default function UserCharacter(character: Character) {
       })
     );
   };
+
+  const handleTarget = (id: number) => {
+    setCharacterArray(
+      characterArray.map((character) => {
+        character.isTargeted = false;
+        if (character.id === id) {
+          return {
+            ...character,
+            isTargeted: !character.isTargeted,
+          };
+        }
+        return character;
+      })
+    );
+  };
+
   return (
-    <li key={character.id} className='rounded-lg bg-white overflow-hidden'>
-      <div className='flex justify-between'>
+    <li
+      key={character.id}
+      className={`rounded-lg bg-white overflow-hidden ${
+        character.isTargeted ? "bg-green-50" : ""
+      }`}
+    >
+      <div className='flex lg:justify-around space-x-11 justify-between'>
         <div className='flex items-center space-x-1 border-2 border-slate-700 p-1.5 -m-1.5 rounded-lg'>
           <span
-            className={`flex-shrink-0 inline-block px-2 py-0.5 text-white text-xs font-medium rounded-full
-            ${character.iLevel.number <= 1355 ? "bg-purple-500" : ""}
-            ${character.iLevel.number >= 1445 ? "bg-orange-500" : ""}
+            className={`flex-shrink-0 inline-block px-2 py-0.5 text-white text-xs font-medium rounded-full border-2 shadow-sm
+            ${
+              character.iLevel.number <= 1355
+                ? "bg-purple-500 border-purple-600"
+                : ""
+            }
+            ${
+              character.iLevel.number >= 1445
+                ? "bg-orange-500 border-orange-600"
+                : ""
+            }
             ${
               character.iLevel.number > 1355 && character.iLevel.number < 1445
-                ? "bg-amber-500 text-white"
+                ? "bg-amber-500 border-amber-600"
                 : ""
             }`}
           >
             {character.iLevel.number}
           </span>
           <span
-            className={`flex-shrink-0 inline-block px-1.5 py-0.5 text-black text-xs font-medium  ${
-              character.rested ? "bg-green-100" : "bg-red-100"
+            className={`flex-shrink-0 inline-block px-1.5 py-0.5 text-black text-xs font-medium border-2 shadow-sm ${
+              character.rested
+                ? "bg-green-100 border-green-200"
+                : "bg-red-100 border-red-200"
             } rounded-full`}
           >
             {character.rested ? "Rested" : "Not Rested"}
           </span>
-          <span className='flex-shrink-0 inline-block px-2 py-0.5 text-green-800 text-xs font-medium bg-sky-100 rounded-full'>
+          <span className='flex-shrink-0 inline-block px-2 py-0.5 text-green-800 text-xs font-medium bg-sky-100 border border-sky-200 rounded-full shadow-sm'>
             {character.amount}
           </span>
         </div>
-        <span className="text-slate-400 hover:text-slate-700 active:text-black px-1.5">Goal Target</span>
+        <button
+          className={`text-black rounded-lg text-xs hover:bg-green-200
+          p-1.5 transition justify-center ${
+            character.isTargeted ? "bg-green-100" : ""
+          }`}
+          onClick={() => handleTarget(character.id)}
+        >
+          Goal Target
+        </button>
       </div>
       <div className='text-black py-1'>
         <div>Reds: {character.totalMaterials.totalReds * character.amount}</div>

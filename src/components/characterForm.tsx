@@ -12,6 +12,7 @@ export const CharacterForm = () => {
   const [level, setLevel] = useState("");
   const [amount, setAmount] = useState("1");
   const [rested, setRested] = useState(false);
+  const [isTargeted, setIsTargeted] = useState(false);
   const [materialState, setMaterialState] = useState({
     totalReds: 0,
     totalBlues: 0,
@@ -51,7 +52,6 @@ export const CharacterForm = () => {
     const parsedLevel = convertToLevel(parseInt(level));
     const cid = generateId();
     const mats = getMaterials(parsedLevel.number);
-    console.log(mats);
     setCharacterArray([
       ...characterArray,
       {
@@ -59,7 +59,7 @@ export const CharacterForm = () => {
         amount: parseInt(amount),
         rested: rested,
         id: cid,
-        isMain: false,
+        isTargeted: isTargeted,
         totalMaterials: {
           totalReds: mats[0],
           totalBlues: mats[1],
@@ -68,7 +68,6 @@ export const CharacterForm = () => {
         },
       },
     ]);
-    console.log(characterArray.length);
   };
 
   useEffect(() => {
@@ -84,21 +83,19 @@ export const CharacterForm = () => {
     <div>
       <form
         onSubmit={handleSubmit}
-        className='flex flex-row justify-around items-center pb-2'
+        className='flex flex-row justify-evenly items-center pb-2'
       >
-        <div>
+        <div className='text-black'>
           <input
-            className='text-black'
             type='text'
             placeholder='Item Level'
             value={level}
             onChange={(e) => setLevel(e.target.value.replace(/[^\d.]/g, ""))}
           />
         </div>
-        <div>
+        <div className='text-black'>
           <input
             type='text'
-            className='w-1/2 text-black'
             placeholder='#'
             value={amount}
             onChange={(e) => {
@@ -107,12 +104,12 @@ export const CharacterForm = () => {
             }}
           />
         </div>
-        <div>
+        <div className='p-1'>
           <label>
             Rested?
             <input
+              className='ml-1'
               type='checkbox'
-              className='mx-4'
               about='Rested'
               onChange={(e) => setRested(e.target.checked)}
             />
@@ -135,12 +132,13 @@ export const CharacterForm = () => {
       >
         {characterArray.map((character: Character) => (
           <UserCharacter
+            key={character.id}
             id={character.id}
             iLevel={character.iLevel}
             amount={character.amount ? character.amount : 1}
             rested={character.rested}
-            isMain={false}
             totalMaterials={character.totalMaterials}
+            isTargeted={character.isTargeted}
           />
         ))}
       </ul>
