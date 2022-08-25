@@ -14,7 +14,7 @@ export const CharacterContext = createContext({
 export default function App(): JSX.Element {
   const [characterArray, setCharacterArray] = useState<Character[]>([]);
   return (
-    <div className='max-w-5xl mx-auto px-4 pt-2 sm:px-6 lg:px-8'>
+    <div className='max-w-5xl mx-auto px-4 pt-2 sm:px-2 lg:px-8'>
       <Settings />
       <Divider />
       <CharacterContext.Provider value={{ characterArray, setCharacterArray }}>

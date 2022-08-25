@@ -71,44 +71,46 @@ export default function UserCharacter(character: Character) {
         character.isTargeted ? "bg-green-50" : ""
       }`}
     >
-      <div className='flex lg:justify-around space-x-11 justify-between'>
-        <div className='flex items-center space-x-1 border-2 border-slate-700 p-1.5 -m-1.5 rounded-lg'>
-          <span
-            className={`flex-shrink-0 inline-block px-2 py-0.5 text-white text-xs font-medium rounded-full border-2 shadow-sm
-            ${
-              character.iLevel.number <= 1355
-                ? "bg-purple-500 border-purple-600"
-                : ""
-            }
+      <div className='flex lg:justify-around space-x-11 sm:space-x-9 justify-between'>
+        <div className='flex items-center sm:space-x-1 border-2 border-slate-700 p-1.5 -m-1.5 sm:-ml-2 rounded-lg'>
+          <span className='relative z-0 inline-flex shadow-sm rounded-md'>
+            <span
+              className={`relative inline-flex items-center p-1 rounded-l-md border border-purple-300  text-xs font-medium text-white focus:z-10  ${
+                character.iLevel.number <= 1355
+                  ? "bg-purple-500 border-purple-600 hover:bg-purple-700"
+                  : ""
+              }
             ${
               character.iLevel.number >= 1445
-                ? "bg-orange-500 border-orange-600"
+                ? "bg-orange-500 border-orange-600 hover:bg-orange-700"
                 : ""
             }
             ${
               character.iLevel.number > 1355 && character.iLevel.number < 1445
-                ? "bg-amber-500 border-amber-600"
+                ? "bg-amber-500 border-amber-600 hover:bg-amber-400"
                 : ""
             }`}
-          >
-            {character.iLevel.number}
-          </span>
-          <span
-            className={`flex-shrink-0 inline-block px-1.5 py-0.5 text-black text-xs font-medium border-2 shadow-sm ${
-              character.rested
-                ? "bg-green-100 border-green-200"
-                : "bg-red-100 border-red-200"
-            } rounded-full`}
-          >
-            {character.rested ? "Rested" : "Not Rested"}
-          </span>
-          <span className='flex-shrink-0 inline-block px-2 py-0.5 text-green-800 text-xs font-medium bg-sky-100 border border-sky-200 rounded-full shadow-sm'>
-            {character.amount}
+            >
+              {character.iLevel.number}
+            </span>
+            <span
+              className={`-ml-px relative inline-flex items-center p-1 border  bg-white text-xs font-medium text-black  focus:z-10 focus:outline-none ${
+                character.rested
+                  ? "bg-green-100 border-green-200 hover:bg-green-50 "
+                  : "bg-red-100 border-red-200 hover:bg-red-50"
+              }`}
+            >
+              {character.rested ? "Rested" : "Not Rested"}
+            </span>
+            <span
+              className={`-ml-px relative inline-flex items-center p-1 rounded-r-md text-xs font-medium text-black hover:bg-sky-50 focus:z-10 focus:outline-none bg-sky-100 border border-sky-200`}
+            >
+              {character.amount}
+            </span>
           </span>
         </div>
         <button
-          className={`text-black rounded-lg text-xs hover:bg-green-200
-          p-1.5 transition justify-center ${
+          className={`relative right-2 -mt-px inline-block px-1 text-black hover:bg-green-200 text-xs font-medium transition rounded-sm ${
             character.isTargeted ? "bg-green-100" : ""
           }`}
           onClick={() => handleTarget(character.id)}

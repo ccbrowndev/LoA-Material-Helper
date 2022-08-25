@@ -83,19 +83,37 @@ export const CharacterForm = () => {
     <div>
       <form
         onSubmit={handleSubmit}
-        className='flex flex-row justify-evenly items-center pb-2'
+        className='flex flex-row justify-center items-center pb-5 space-x-7 sm:space-x-1'
       >
-        <div className='text-black'>
+        <div className='relative border border-gray-300 rounded-md p-2 shadow-sm'>
+          <label
+            htmlFor='Level'
+            className='absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium'
+          >
+            iLevel
+          </label>
           <input
             type='text'
-            placeholder='Item Level'
+            name='level'
+            id='level'
+            className='block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm'
+            placeholder='1325+'
             value={level}
             onChange={(e) => setLevel(e.target.value.replace(/[^\d.]/g, ""))}
           />
         </div>
-        <div className='text-black'>
+        <div className='relative border border-gray-300 rounded-md p-2 shadow-sm'>
+          <label
+            htmlFor='name'
+            className='absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium'
+          >
+            Amount
+          </label>
           <input
             type='text'
+            name='amount'
+            id='amount'
+            className='block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm'
             placeholder='#'
             value={amount}
             onChange={(e) => {
@@ -119,7 +137,7 @@ export const CharacterForm = () => {
           <label>
             <input
               type='submit'
-              className='inline-block hover:cursor-pointer'
+              className='hover:cursor-pointer'
               value='Submit'
             />
           </label>
