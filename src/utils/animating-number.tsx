@@ -35,7 +35,7 @@ function NumberColumn({ digit }: { digit: number }) {
 export default function AnimatingNumber({ value }: { value: number }) {
   const numArray = formatForDisplay(value);
   return (
-    <div className='h-full mx-auto flex flex-row-reverse relative overflow-hidden'>
+    <div className='h-full mx-auto flex flex-row-reverse relative overflow-hidden justify-center'>
       {numArray.map((num, index) => (
         <NumberColumn digit={parseInt(num)} key={index} />
       ))}
