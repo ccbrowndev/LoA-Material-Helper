@@ -77,7 +77,7 @@ export default function UserCharacter(character: Character) {
             <span
               className={`relative inline-flex items-center p-1 rounded-l-md border border-purple-300  text-xs font-medium text-white focus:z-10  ${
                 character.iLevel.number <= 1355
-                  ? "bg-purple-500 border-purple-600 hover:bg-purple-700"
+                  ? "bg-purple-700 border-purple-800 hover:bg-purple-500"
                   : ""
               }
             ${
