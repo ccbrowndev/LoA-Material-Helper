@@ -71,8 +71,8 @@ export default function UserCharacter(character: Character) {
         character.isTargeted ? "bg-green-50" : ""
       }`}
     >
-      <div className='flex lg:justify-around space-x-11 sm:space-x-9 justify-between'>
-        <div className='flex items-center sm:space-x-1 border-2 border-slate-700 p-1.5 -m-1.5 sm:-ml-2 rounded-lg'>
+      <div className='flex justify-between lg:justify-around space-x-11 sm:space-x-9'>
+        <div className='flex items-center sm:space-x-1 border-2 border-slate-700 p-1.5 -m-1.5 sm:-ml-2 rounded-lg lg:relative lg:right-3 '>
           <span className='relative z-0 inline-flex shadow-sm rounded-md'>
             <span
               className={`relative inline-flex items-center p-1 rounded-l-md border border-purple-300  text-xs font-medium text-white focus:z-10  ${
