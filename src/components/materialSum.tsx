@@ -38,11 +38,14 @@ export default function MaterialSum() {
         </span>
       </span>
       <span className='p-4 text-emerald-400 sm:text-xs text-base font-medium'>
-        Total Shards <br />
+        Target Total Shards <br />
         <span className='sm:text-xl text-4xl font-extrabold'>
           <AnimatingNumber
+            //Returns the shards ONLY for the character whose isTargeted is true
             value={characterArray.reduce((acc, curr) => {
-              return acc + curr.totalMaterials.totalShards * curr.amount;
+              if (curr.isTargeted) {
+                return curr.totalMaterials.totalShards;
+              } else return acc;
             }, 0)}
           />
         </span>
