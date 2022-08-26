@@ -19,7 +19,7 @@ function NumberColumn({ digit }: { digit: number }) {
     <div className='relative' ref={columnContainer}>
       <motion.div
         animate={{ y: position }}
-        className=' h-[1000%] bottom-0 absolute'
+        className=' h-[1000%] bottom-[0] absolute'
       >
         {[9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map((num) => (
           <div key={num} className='h-[10%]'>
