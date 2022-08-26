@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 function formatForDisplay(number: number) {
-  console.log(number.toFixed(0).split("").reverse());
   return number.toFixed(0).split("").reverse();
 }
 function NumberColumn({ digit }: { digit: number }) {
