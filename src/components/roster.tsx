@@ -1,4 +1,5 @@
 import { CharacterForm } from "./characterForm";
+import MaterialSum from "./materialSum";
 
 export default function Roster() {
   return (
@@ -9,6 +10,7 @@ export default function Roster() {
         </summary>
         {/* Input row */}
         <CharacterForm />
+        <MaterialSum />
       </details>
     </div>
   );
