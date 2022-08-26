@@ -110,8 +110,8 @@ export default function UserCharacter(character: Character) {
           </span>
         </div>
         <button
-          className={`relative right-2 -mt-px inline-block px-1 text-black hover:bg-green-200 text-xs font-medium transition rounded-sm ${
-            character.isTargeted ? "bg-green-100" : ""
+          className={`relative right-2 -mt-px inline-block px-1 hover:bg-green-200 text-xs font-medium transition rounded-sm ${
+            character.isTargeted ? "text-black" : "text-slate-400 hover:text-slate-600"
           }`}
           onClick={() => handleTarget(character.id)}
         >
