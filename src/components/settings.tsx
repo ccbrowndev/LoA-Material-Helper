@@ -1,7 +1,7 @@
 export default function Settings() {
   return (
     <div className=' pb-6 sm:px-6 lg:px-8 h-auto text-white text-center'>
-      <details open>
+      <details>
         <summary className='text-2xl font-bold tracking-tight hover:cursor-pointer'>
           Info & Settings
         </summary>
