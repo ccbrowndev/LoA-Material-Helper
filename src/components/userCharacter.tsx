@@ -1,10 +1,12 @@
 import { Character } from "../types/character";
 import { MinusIcon, PlusIcon } from "@heroicons/react/solid";
-import { useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { CharacterContext } from "../App";
+import { targetContext } from "../App";
 
 export default function UserCharacter(character: Character) {
   const { characterArray, setCharacterArray } = useContext(CharacterContext);
+  const { targetCharacter, setTargetCharacter } = useContext(targetContext);
 
   const handleMinus = (amount: number, id: number) => {
     if (amount === 1) {
@@ -54,11 +56,13 @@ export default function UserCharacter(character: Character) {
       characterArray.map((character) => {
         character.isTargeted = false;
         if (character.id === id) {
+          setTargetCharacter(character);
           return {
             ...character,
             isTargeted: !character.isTargeted,
           };
         }
+
         return character;
       })
     );
@@ -111,7 +115,9 @@ export default function UserCharacter(character: Character) {
         </div>
         <button
           className={`relative right-2 -mt-px inline-block px-1 hover:bg-green-200 text-xs font-medium transition rounded-sm ${
-            character.isTargeted ? "text-black" : "text-slate-400 hover:text-slate-600"
+            character.isTargeted
+              ? "text-black"
+              : "text-slate-400 hover:text-slate-600"
           }`}
           onClick={() => handleTarget(character.id)}
         >
