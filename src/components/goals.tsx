@@ -10,7 +10,7 @@ import { materialData } from "../utils/materialData";
 
 export default function Goals() {
   const defaultGoal: Goal = {
-    name: "custom",
+    name: "default",
     redsRequired: 0,
     bluesRequired: 0,
     leapsRequired: 0,
@@ -61,17 +61,10 @@ export default function Goals() {
   }
 
   const handleGoalSelection = (event: { target: HTMLSelectElement }) => {
-    for (const g in goalData) {
-      if (g === event.target.value) {
-        setGoal(goalData.get(g) || defaultGoal);
-      }
-    }
-    console.log(
-      goal.bluesRequired,
-      goal.redsRequired,
-      goal.leapsRequired,
-      goal.shardsRequired
-    );
+    setGoal(defaultGoal)
+    goalData.forEach((value, key) => {
+      if (key === event.target.value) setGoal(value)
+    })
     setEta(calcETA(goal));
   };
 
@@ -81,7 +74,7 @@ export default function Goals() {
         <summary className='text-2xl font-bold tracking-tight hover:cursor-pointer pb-4'>
           Goals
         </summary>
-        <Menu as='div' className='relative inline-block text-left'>
+        {/* <Menu as='div' className='relative inline-block text-left'>
           <div>
             <Menu.Button className='inline-flex justify-center w-full rounded-md border border-slate-400 shadow-sm px-4 py-2 bg-white text-sm font-medium text-slate-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-500 focus:ring-slate-700'>
               Character selected:{" "}
@@ -155,22 +148,22 @@ export default function Goals() {
               </div>
             </Menu.Items>
           </Transition>
-        </Menu>
+        </Menu> */}
 
-        {/* <div>
+        {<div>
           <label className=''>
             Select a goal
             <select
               className='text-black'
-              value={}
+              defaultValue={'custom'}
               onChange={handleGoalSelection}
             >
-              <option value='goal20wep21'>1340 Weapon +20 to +21</option>
-              <option value='goal1340alt1370'>1340 Alt to 1370</option>
+              <option value='20wep21'>1340 Weapon +20 to +21</option>
+              <option value='1340alt1370'>1340 Alt to 1370</option>
               <option value='custom'>Custom goal</option>
             </select>
           </label>
-        </div> */}
+        </div>}
         <div>{`Selected goal: ${goal.name}`}</div>
       </details>
     </div>

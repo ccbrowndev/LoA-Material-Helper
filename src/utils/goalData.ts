@@ -16,6 +16,14 @@ const goal1340alt1370: Goal = {
   shardsRequired: 25295,
 };
 
+const goalCustom: Goal = {
+  name: "custom",
+  redsRequired: 0,
+  bluesRequired: 0,
+  leapsRequired: 0,
+  shardsRequired: 0,
+}
+
 export const goalData = new Map([
   [goal20wep21.name, goal20wep21],
   [goal1340alt1370.name, goal1340alt1370],
