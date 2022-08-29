@@ -6,6 +6,7 @@ import { Character } from "../types/character";
 import { Goal } from "../types/goal";
 import { goalData, goals } from "../utils/goalData";
 import { targetContext } from "../App";
+import { materialData } from "../utils/materialData";
 
 export default function Goals() {
   const defaultGoal: Goal = {
@@ -21,21 +22,38 @@ export default function Goals() {
   const [eta, setEta] = useState(0);
   const { targetCharacter, setTargetCharacter } = useContext(targetContext);
 
+  const getRosterMats = (charList: Array<Character>) => {
+    let reds = 0;
+    let blues = 0;
+    let leaps = 0;
+    let shards = 0;
+
+    charList.forEach(character => {
+      reds += character.totalMaterials.totalReds
+      blues += character.totalMaterials.totalBlues
+      leaps += materialData.get(character.iLevel.number)?.guardianLeaps || 0
+      if (character.isTargeted) {
+        shards += character.totalMaterials.totalShards
+        leaps += materialData.get(character.iLevel.number)?.chaosLeaps || 0
+      }
+    })
+
+    return [reds, blues, leaps, shards]
+  }
+
   /* Pseudo-Code
     Find the highest value between dividing goal amount by roster total of each material 
     ETA = Ceiling(theHighestValue)
     */
-  const calcETA = (g: Goal, charList: Array<Character>) => {
-    //Gets total amount of characters in the roster
-    const rosterTotal = charList.reduce((total, character) => {
-      return total + character.amount;
-    }, 0);
-    const reds = g.redsRequired / rosterTotal;
-    const blues = g.bluesRequired / rosterTotal;
-    const leaps = g.leapsRequired / rosterTotal;
-    const shards = g.shardsRequired / rosterTotal;
-    const theHighestValue = Math.max(reds, blues, leaps, shards);
-    return Math.ceil(theHighestValue);
+  const calcETA = (g: Goal) => {
+    const rosterMats = getRosterMats(characterArray)
+    const redRatio = g.redsRequired / rosterMats[0]
+    const blueRatio = g.bluesRequired / rosterMats[1]
+    const leapRatio = g.leapsRequired / rosterMats[2]
+    const shardRatio = g.shardsRequired / rosterMats[3]
+
+    const highestRatio = Math.max(redRatio, blueRatio, leapRatio, shardRatio)
+    return Math.ceil(highestRatio)
   };
 
   function classNames(...classes: string[]) {
@@ -54,7 +72,7 @@ export default function Goals() {
       goal.leapsRequired,
       goal.shardsRequired
     );
-    setEta(calcETA(goal, characterArray));
+    setEta(calcETA(goal));
   };
 
   return (
@@ -92,7 +110,7 @@ export default function Goals() {
                 <p className='text-sm text-black'>
                   Signed in as <span>{`${targetCharacter.iLevel.number}`}</span>
                 </p>
-                <p className='text-sm font-medium text-gray-900 truncate'>{}</p>
+                <p className='text-sm font-medium text-gray-900 truncate'>{ }</p>
               </div>
               <div className='py-1'>
                 <Menu.Item>
