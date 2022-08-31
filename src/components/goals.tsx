@@ -1,16 +1,16 @@
-import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/solid";
-import { Fragment, useContext, useState } from "react";
-import { CharacterContext } from "../App";
-import { Character } from "../types/character";
-import { Goal } from "../types/goal";
-import { goalData, goals } from "../utils/goalData";
-import { targetContext } from "../App";
-import { materialData } from "../utils/materialData";
+import { Menu, Transition } from '@headlessui/react';
+import { ChevronDownIcon } from '@heroicons/react/solid';
+import { Fragment, useContext, useState } from 'react';
+import { CharacterContext } from '../App';
+import { Character } from '../types/character';
+import { Goal } from '../types/goal';
+import { goalData, goals } from '../utils/goalData';
+import { targetContext } from '../App';
+import { materialData } from '../utils/materialData';
 
 export default function Goals() {
   const defaultGoal: Goal = {
-    name: "default",
+    name: 'custom',
     redsRequired: 0,
     bluesRequired: 0,
     leapsRequired: 0,
@@ -19,7 +19,6 @@ export default function Goals() {
 
   const { characterArray, setCharacterArray } = useContext(CharacterContext);
   const [goal, setGoal] = useState<Goal>(defaultGoal);
-  const [eta, setEta] = useState(0);
   const { targetCharacter, setTargetCharacter } = useContext(targetContext);
 
   const getRosterMats = (charList: Array<Character>) => {
@@ -28,50 +27,49 @@ export default function Goals() {
     let leaps = 0;
     let shards = 0;
 
-    charList.forEach(character => {
-      reds += character.totalMaterials.totalReds
-      blues += character.totalMaterials.totalBlues
-      leaps += materialData.get(character.iLevel.number)?.guardianLeaps || 0
+    charList.forEach((character) => {
+      reds += character.totalMaterials.totalReds;
+      blues += character.totalMaterials.totalBlues;
+      leaps += materialData.get(character.iLevel.number)?.guardianLeaps || 0;
       if (character.isTargeted) {
-        shards += character.totalMaterials.totalShards
-        leaps += materialData.get(character.iLevel.number)?.chaosLeaps || 0
+        shards += character.totalMaterials.totalShards;
+        leaps += materialData.get(character.iLevel.number)?.chaosLeaps || 0;
       }
-    })
+    });
 
-    return [reds, blues, leaps, shards]
-  }
+    return [reds, blues, leaps, shards];
+  };
 
   /* Pseudo-Code
     Find the highest value between dividing goal amount by roster total of each material 
     ETA = Ceiling(theHighestValue)
     */
   const calcETA = (g: Goal) => {
-    const rosterMats = getRosterMats(characterArray)
-    const redRatio = g.redsRequired / rosterMats[0]
-    const blueRatio = g.bluesRequired / rosterMats[1]
-    const leapRatio = g.leapsRequired / rosterMats[2]
-    const shardRatio = g.shardsRequired / rosterMats[3]
+    const rosterMats = getRosterMats(characterArray);
+    const redRatio = g.redsRequired / rosterMats[0];
+    const blueRatio = g.bluesRequired / rosterMats[1];
+    const leapRatio = g.leapsRequired / rosterMats[2];
+    const shardRatio = g.shardsRequired / rosterMats[3];
 
-    const highestRatio = Math.max(redRatio, blueRatio, leapRatio, shardRatio)
-    return Math.ceil(highestRatio)
+    const highestRatio = Math.max(redRatio, blueRatio, leapRatio, shardRatio);
+    return Math.ceil(highestRatio);
   };
 
   function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(" ");
+    return classes.filter(Boolean).join(' ');
   }
 
   const handleGoalSelection = (event: { target: HTMLSelectElement }) => {
-    setGoal(defaultGoal)
+    setGoal(defaultGoal);
     goalData.forEach((value, key) => {
-      if (key === event.target.value) setGoal(value)
-    })
-    setEta(calcETA(goal));
+      if (key === event.target.value) setGoal(value);
+    });
   };
 
   return (
-    <div className='pb-6 sm:px-6 lg:px-8 h-96 text-white text-center'>
+    <div className="pb-6 sm:px-6 lg:px-8 h-96 text-white text-center">
       <details open>
-        <summary className='text-2xl font-bold tracking-tight hover:cursor-pointer pb-4'>
+        <summary className="text-2xl font-bold tracking-tight hover:cursor-pointer pb-4">
           Goals
         </summary>
         {/* <Menu as='div' className='relative inline-block text-left'>
@@ -150,21 +148,90 @@ export default function Goals() {
           </Transition>
         </Menu> */}
 
-        {<div>
-          <label className=''>
-            Select a goal
-            <select
-              className='text-black'
-              defaultValue={'custom'}
-              onChange={handleGoalSelection}
+        {
+          <div>
+            <label className="">
+              Select a goal
+              <select
+                className="text-black"
+                defaultValue={'custom'}
+                onChange={handleGoalSelection}
+              >
+                <option value="20wep21">1340 Weapon +20 to +21</option>
+                <option value="1340alt1370">1340 Alt to 1370</option>
+                <option value="custom">Custom goal</option>
+              </select>
+            </label>
+          </div>
+        }
+        <div>{`Goal Reds: ${goal.redsRequired}, Goal Blues ${goal.bluesRequired}, Goal Leaps ${goal.leapsRequired}, Goal Shards ${goal.shardsRequired}`}</div>
+        <form
+          className={`flex flex-row justify-center items-center py-5 space-x-7 sm:space-x-1`}
+        >
+          <div className="relative border border-gray-300 rounded-md p-2 shadow-sm">
+            <label
+              htmlFor="Reds"
+              className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium"
             >
-              <option value='20wep21'>1340 Weapon +20 to +21</option>
-              <option value='1340alt1370'>1340 Alt to 1370</option>
-              <option value='custom'>Custom goal</option>
-            </select>
-          </label>
-        </div>}
-        <div>{`Selected goal: ${goal.name}`}</div>
+              Reds
+            </label>
+            <input
+              type="text"
+              name="reds"
+              id="reds"
+              className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
+              placeholder="Number of Reds"
+            ></input>
+          </div>
+          <div className="relative border border-gray-300 rounded-md p-2 shadow-sm">
+            <label
+              htmlFor="Blues"
+              className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium"
+            >
+              Blues
+            </label>
+            <input
+              type="text"
+              name="blues"
+              id="blues"
+              className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
+              placeholder="Number of Blues"
+            ></input>
+          </div>
+          <div className="relative border border-gray-300 rounded-md p-2 shadow-sm">
+            <label
+              htmlFor="Leaps"
+              className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium"
+            >
+              Leaps
+            </label>
+            <input
+              type="text"
+              name="leaps"
+              id="leaps"
+              className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
+              placeholder="Number of Leapstones"
+            ></input>
+          </div>
+          <div className="relative border border-gray-300 rounded-md p-2 shadow-sm">
+            <label
+              htmlFor="Shards"
+              className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium"
+            >
+              Shards
+            </label>
+            <input
+              type="text"
+              name="shards"
+              id="shards"
+              className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
+              placeholder="Number of Shards"
+            ></input>
+          </div>
+        </form>
+        <p>{`It will take an estimated ${calcETA(
+          goal
+        )} days to complete this goal`}</p>
       </details>
     </div>
   );
