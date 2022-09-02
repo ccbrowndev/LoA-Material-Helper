@@ -12,7 +12,7 @@ how long it might take to achieve goals within the game. Below are some importan
   * After basic functionality is finished, a "Yoho Fan" and "Deskaluda Fan" option may be included for people who skip Velganos and Kungelanium.
 * Characters entered run content on a daily basis, or in the case of rested characters, this bonus is used consistently.
 * T1 and T2 go by quickly after the global honing changes were applied, and as such, do not need consideration.
-* Gold and silver are handled by the player.
+* Gold, fusion materials, and silver are handled by the player.
 
 ## Todo - User Guide
 
