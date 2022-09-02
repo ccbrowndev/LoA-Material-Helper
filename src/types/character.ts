@@ -11,7 +11,8 @@ export type Character = {
   totalMaterials: {
     totalReds: number;
     totalBlues: number;
-    totalLeaps: number;
+    guardianLeaps: number;
+    chaosLeaps: number;
     totalShards: number;
   };
 };

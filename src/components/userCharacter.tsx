@@ -130,7 +130,9 @@ export default function UserCharacter(character: Character) {
           Blues: {character.totalMaterials.totalBlues * character.amount}
         </div>
         <div>
-          Leaps: {character.totalMaterials.totalLeaps * character.amount}
+          Leaps: {character.isTargeted ? 
+          (character.totalMaterials.chaosLeaps + (character.totalMaterials.guardianLeaps * character.amount)) 
+          : (character.totalMaterials.guardianLeaps * character.amount)}
         </div>
         <div>
           Shards: {character.totalMaterials.totalShards * character.amount}

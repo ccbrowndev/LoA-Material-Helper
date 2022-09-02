@@ -13,12 +13,7 @@ export const CharacterForm = () => {
   const [amount, setAmount] = useState("1");
   const [rested, setRested] = useState(false);
   const [isTargeted, setIsTargeted] = useState(false);
-  const [materialState, setMaterialState] = useState({
-    totalReds: 0,
-    totalBlues: 0,
-    totalLeaps: 0,
-    totalShards: 0,
-  });
+  
   const parent = useRef(null);
 
   function getMaterials(charLevel: number) {
@@ -35,16 +30,11 @@ export const CharacterForm = () => {
     const reds = materials.chaosReds + materials.guardianReds;
     const blues = materials.chaosBlues + materials.guardianBlues;
     const leaps = materials.chaosLeaps + materials.guardianLeaps;
-    const shards = materials.shards;
+    const chaosLeaps = materials.chaosLeaps;
+    const guardianLeaps = materials.guardianLeaps;
+    const shards = materials.shards; 
 
-    setMaterialState(() => ({
-      totalReds: reds,
-      totalBlues: blues,
-      totalLeaps: leaps,
-      totalShards: shards,
-    }));
-
-    return [reds, blues, leaps, shards];
+    return {reds: reds, blues: blues, chaosLeaps: chaosLeaps, guardianLeaps: guardianLeaps, shards: shards};
   }
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
@@ -60,11 +50,18 @@ export const CharacterForm = () => {
         rested: rested,
         id: cid,
         isTargeted: isTargeted,
-        totalMaterials: {
-          totalReds: mats[0],
-          totalBlues: mats[1],
-          totalLeaps: mats[2],
-          totalShards: mats[3],
+        totalMaterials: rested ? {
+          totalReds: Math.floor(mats.reds * (2/3)),
+          totalBlues: Math.floor(mats.blues * (2/3)),
+          guardianLeaps: Math.floor(mats.guardianLeaps * (2/3)),
+          chaosLeaps: Math.floor(mats.chaosLeaps * (2/3)),
+          totalShards: Math.floor(mats.shards * (2/3)),
+        } : {
+          totalReds: mats.reds,
+          totalBlues: mats.blues,
+          guardianLeaps: mats.guardianLeaps,
+          chaosLeaps: mats.chaosLeaps,
+          totalShards: mats.shards,
         },
       },
     ]);
