@@ -1,10 +1,9 @@
 import { useContext } from "react";
 import { CharacterContext } from "../App";
 import AnimatingNumber from "../utils/animating-number";
-import { Character } from "../types/character";
 
 export default function MaterialSum() {
-  const { characterArray, setCharacterArray } = useContext(CharacterContext);
+  const { characterArray } = useContext(CharacterContext);
 
   return (
     <div className='flex justify-between'>

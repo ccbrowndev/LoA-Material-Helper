@@ -1,12 +1,8 @@
-import { Menu, Transition } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/solid';
-import { Fragment, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { CharacterContext } from '../App';
 import { Character } from '../types/character';
 import { Goal } from '../types/goal';
-import { goalData, goals } from '../utils/goalData';
-import { targetContext } from '../App';
-import { materialData } from '../utils/materialData';
+import { goalData } from '../utils/goalData';
 
 export default function Goals() {
   const defaultGoal: Goal = {
@@ -17,9 +13,9 @@ export default function Goals() {
     shardsRequired: 0,
   };
 
-  const { characterArray, setCharacterArray } = useContext(CharacterContext);
+  const { characterArray } = useContext(CharacterContext);
   const [goal, setGoal] = useState<Goal>(defaultGoal);
-  const { targetCharacter, setTargetCharacter } = useContext(targetContext);
+  const [ customGoalState, setCustomGoalState ] = useState('initial')
 
   const getRosterMats = (charList: Array<Character>) => {
     let reds = 0;
@@ -27,37 +23,31 @@ export default function Goals() {
     let leaps = 0;
     let shards = 0;
 
+    // the leaps returned need to be only guardian leapstones except for the targetted character. The shards should be 0 unless it's the targeted character.
     charList.forEach((character) => {
       reds += character.totalMaterials.totalReds;
       blues += character.totalMaterials.totalBlues;
-      leaps += materialData.get(character.iLevel.number)?.guardianLeaps || 0;
+      leaps += character.totalMaterials.guardianLeaps;
       if (character.isTargeted) {
         shards += character.totalMaterials.totalShards;
-        leaps += materialData.get(character.iLevel.number)?.chaosLeaps || 0;
+        leaps += character.totalMaterials.chaosLeaps;
       }
     });
 
-    return [reds, blues, leaps, shards];
+    return {reds: reds, blues: blues, leaps: leaps, shards: shards};
   };
 
-  /* Pseudo-Code
-    Find the highest value between dividing goal amount by roster total of each material 
-    ETA = Ceiling(theHighestValue)
-    */
+  //Finds the mat requirement that will take the longest and then returns that with ceiling applied
   const calcETA = (g: Goal) => {
     const rosterMats = getRosterMats(characterArray);
-    const redRatio = g.redsRequired / rosterMats[0];
-    const blueRatio = g.bluesRequired / rosterMats[1];
-    const leapRatio = g.leapsRequired / rosterMats[2];
-    const shardRatio = g.shardsRequired / rosterMats[3];
+    const redRatio = g.redsRequired / rosterMats.reds
+    const blueRatio = g.bluesRequired / rosterMats.blues;
+    const leapRatio = g.leapsRequired / rosterMats.leaps;
+    const shardRatio = g.shardsRequired / rosterMats.shards;
 
     const highestRatio = Math.max(redRatio, blueRatio, leapRatio, shardRatio);
     return Math.ceil(highestRatio);
   };
-
-  function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ');
-  }
 
   const handleGoalSelection = (event: { target: HTMLSelectElement }) => {
     setGoal(defaultGoal);
@@ -66,88 +56,23 @@ export default function Goals() {
     });
   };
 
+  //Used to determine button visibility for the goal form
+  const  getGoalButtonVisibility = (buttonName: string) => {
+    if (goal.name === 'custom') {
+      if ((customGoalState === 'initial' && buttonName === 'remove') || (customGoalState === 'addClicked' && buttonName === 'add')) {
+        return 'hidden'
+      } else return ''
+    }
+    if (buttonName === 'add') return 'hidden'
+    return ''
+  }
+
   return (
     <div className="pb-6 sm:px-6 lg:px-8 h-96 text-white text-center">
       <details open>
         <summary className="text-2xl font-bold tracking-tight hover:cursor-pointer pb-4">
           Goals
         </summary>
-        {/* <Menu as='div' className='relative inline-block text-left'>
-          <div>
-            <Menu.Button className='inline-flex justify-center w-full rounded-md border border-slate-400 shadow-sm px-4 py-2 bg-white text-sm font-medium text-slate-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-500 focus:ring-slate-700'>
-              Character selected:{" "}
-              <span className='pl-1 text-slate-800 font-bold'>{`${targetCharacter.iLevel.number}`}</span>
-              <ChevronDownIcon
-                className='-mr-1 ml-2 h-5 w-5'
-                aria-hidden='true'
-              />
-            </Menu.Button>
-          </div>
-
-          <Transition
-            as={Fragment}
-            enter='transition ease-out duration-100'
-            enterFrom='transform opacity-0 scale-95'
-            enterTo='transform opacity-100 scale-100'
-            leave='transition ease-in duration-75'
-            leaveFrom='transform opacity-100 scale-100'
-            leaveTo='transform opacity-0 scale-95'
-          >
-            <Menu.Items
-              onSelect={() => handleGoalSelection}
-              className='origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none'
-            >
-              <div className='px-4 py-3'>
-                <p className='text-sm text-black'>
-                  Signed in as <span>{`${targetCharacter.iLevel.number}`}</span>
-                </p>
-                <p className='text-sm font-medium text-gray-900 truncate'>{ }</p>
-              </div>
-              <div className='py-1'>
-                <Menu.Item>
-                  {({ active }) => (
-                    <a
-                      href='#'
-                      className={classNames(
-                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        "block px-4 py-2 text-sm"
-                      )}
-                    >
-                      Goal goes here
-                    </a>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <a
-                      href='#'
-                      className={classNames(
-                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        "block px-4 py-2 text-sm"
-                      )}
-                    >
-                      Goal goes here
-                    </a>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <a
-                      href='#'
-                      className={classNames(
-                        active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                        "block px-4 py-2 text-sm"
-                      )}
-                    >
-                      Goal goes here
-                    </a>
-                  )}
-                </Menu.Item>
-              </div>
-            </Menu.Items>
-          </Transition>
-        </Menu> */}
-
         {
           <div>
             <label className="">
@@ -227,6 +152,24 @@ export default function Goals() {
               className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
               placeholder="Number of Shards"
             ></input>
+          </div>
+          <div className={`border px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-600 text-white font-bold ${getGoalButtonVisibility('add')}`}>
+            <label>
+              <input
+                type='button'
+                className='hover:cursor-pointer'
+                value='Add custom goal'
+              />
+            </label>
+          </div>
+          <div className={`border px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-600 text-white font-bold ${getGoalButtonVisibility('remove')}`}>
+            <label>
+              <input
+                type='button'
+                className='hover:cursor-pointer'
+                value='Remove owned materials'
+              />
+            </label>
           </div>
         </form>
         <p>{`It will take an estimated ${calcETA(

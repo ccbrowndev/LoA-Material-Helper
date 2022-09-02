@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
+//Formats the number for later use.
+// Sets the number to an array of strings each containing a single digit.
 function formatForDisplay(number: number) {
-  return number.toFixed(0).split("").reverse();
+  return number.toFixed(0).split("");
 }
 function NumberColumn({ digit }: { digit: number }) {
   const [position, setPosition] = useState(0);
@@ -30,11 +32,13 @@ function NumberColumn({ digit }: { digit: number }) {
     </div>
   );
 }
+//12.45 124.57
+[1,2,4,5, 7]
 
 export default function AnimatingNumber({ value }: { value: number }) {
   const numArray = formatForDisplay(value);
   return (
-    <div className='h-full mx-auto flex flex-row-reverse relative overflow-hidden justify-center'>
+    <div className='h-full mx-auto flex relative overflow-hidden justify-center'>
       {numArray.map((num, index) => (
         <NumberColumn digit={parseInt(num)} key={index} />
       ))}
