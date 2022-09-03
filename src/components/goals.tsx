@@ -15,7 +15,19 @@ export default function Goals() {
 
   const { characterArray } = useContext(CharacterContext);
   const [goal, setGoal] = useState<Goal>(defaultGoal);
-  const [ customGoalState, setCustomGoalState ] = useState('initial')
+  const [customGoalState, setCustomGoalState] = useState('initial');
+  const [formInputs, setFormInputs] = useState({
+    reds: '',
+    blues: '',
+    leaps: '',
+    shards: '',
+  });
+
+  const handleChange = (event: { target: HTMLInputElement }) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setFormInputs((values) => ({ ...values, [name]: value }));
+  };
 
   const getRosterMats = (charList: Array<Character>) => {
     let reds = 0;
@@ -34,13 +46,38 @@ export default function Goals() {
       }
     });
 
-    return {reds: reds, blues: blues, leaps: leaps, shards: shards};
+    return { reds: reds, blues: blues, leaps: leaps, shards: shards };
+  };
+
+  const handleRemoveMats = () => {
+    //The max function is used here to prevent the materials in a goal from going negative.
+    const newReds = Math.max(0, goal.redsRequired - parseInt(formInputs.reds));
+    const newBlues = Math.max(
+      0,
+      goal.bluesRequired - parseInt(formInputs.blues)
+    );
+    const newLeaps = Math.max(
+      0,
+      goal.leapsRequired - parseInt(formInputs.leaps)
+    );
+    const newShards = Math.max(
+      0,
+      goal.shardsRequired - parseInt(formInputs.shards)
+    );
+
+    setGoal({
+      ...goal,
+      redsRequired: newReds,
+      bluesRequired: newBlues,
+      leapsRequired: newLeaps,
+      shardsRequired: newShards,
+    });
   };
 
   //Finds the mat requirement that will take the longest and then returns that with ceiling applied
   const calcETA = (g: Goal) => {
     const rosterMats = getRosterMats(characterArray);
-    const redRatio = g.redsRequired / rosterMats.reds
+    const redRatio = g.redsRequired / rosterMats.reds;
     const blueRatio = g.bluesRequired / rosterMats.blues;
     const leapRatio = g.leapsRequired / rosterMats.leaps;
     const shardRatio = g.shardsRequired / rosterMats.shards;
@@ -50,6 +87,7 @@ export default function Goals() {
   };
 
   const handleGoalSelection = (event: { target: HTMLSelectElement }) => {
+    setCustomGoalState('initial');
     setGoal(defaultGoal);
     goalData.forEach((value, key) => {
       if (key === event.target.value) setGoal(value);
@@ -57,15 +95,18 @@ export default function Goals() {
   };
 
   //Used to determine button visibility for the goal form
-  const  getGoalButtonVisibility = (buttonName: string) => {
+  const getGoalButtonVisibility = (buttonName: string) => {
     if (goal.name === 'custom') {
-      if ((customGoalState === 'initial' && buttonName === 'remove') || (customGoalState === 'addClicked' && buttonName === 'add')) {
-        return 'hidden'
-      } else return ''
+      if (
+        (customGoalState === 'initial' && buttonName === 'remove') ||
+        (customGoalState === 'addClicked' && buttonName === 'add')
+      ) {
+        return 'hidden';
+      } else return '';
     }
-    if (buttonName === 'add') return 'hidden'
-    return ''
-  }
+    if (buttonName === 'add') return 'hidden';
+    return '';
+  };
 
   return (
     <div className="pb-6 sm:px-6 lg:px-8 h-96 text-white text-center">
@@ -106,6 +147,8 @@ export default function Goals() {
               id="reds"
               className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
               placeholder="Number of Reds"
+              value={formInputs.reds || ''}
+              onChange={handleChange}
             ></input>
           </div>
           <div className="relative border border-gray-300 rounded-md p-2 shadow-sm">
@@ -121,6 +164,8 @@ export default function Goals() {
               id="blues"
               className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
               placeholder="Number of Blues"
+              value={formInputs.blues || ''}
+              onChange={handleChange}
             ></input>
           </div>
           <div className="relative border border-gray-300 rounded-md p-2 shadow-sm">
@@ -136,6 +181,8 @@ export default function Goals() {
               id="leaps"
               className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
               placeholder="Number of Leapstones"
+              value={formInputs.leaps || ''}
+              onChange={handleChange}
             ></input>
           </div>
           <div className="relative border border-gray-300 rounded-md p-2 shadow-sm">
@@ -151,23 +198,44 @@ export default function Goals() {
               id="shards"
               className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
               placeholder="Number of Shards"
+              value={formInputs.shards || ''}
+              onChange={handleChange}
             ></input>
           </div>
-          <div className={`border px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-600 text-white font-bold ${getGoalButtonVisibility('add')}`}>
+          <div
+            className={`border px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-600 text-white font-bold ${getGoalButtonVisibility(
+              'add'
+            )}`}
+          >
             <label>
               <input
-                type='button'
-                className='hover:cursor-pointer'
-                value='Add custom goal'
+                type="button"
+                className="hover:cursor-pointer"
+                value="Add custom goal"
+                onClick={() => {
+                  setCustomGoalState('addClicked');
+                  setGoal({
+                    name: 'custom',
+                    redsRequired: parseInt(formInputs.reds),
+                    bluesRequired: parseInt(formInputs.blues),
+                    leapsRequired: parseInt(formInputs.leaps),
+                    shardsRequired: parseInt(formInputs.shards),
+                  });
+                }}
               />
             </label>
           </div>
-          <div className={`border px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-600 text-white font-bold ${getGoalButtonVisibility('remove')}`}>
+          <div
+            className={`border px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-600 text-white font-bold ${getGoalButtonVisibility(
+              'remove'
+            )}`}
+          >
             <label>
               <input
-                type='button'
-                className='hover:cursor-pointer'
-                value='Remove owned materials'
+                type="button"
+                className="hover:cursor-pointer"
+                value="Remove owned materials"
+                onClick={handleRemoveMats}
               />
             </label>
           </div>
