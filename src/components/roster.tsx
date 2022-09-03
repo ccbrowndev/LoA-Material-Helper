@@ -8,7 +8,6 @@ export default function Roster() {
         <summary className='text-2xl font-bold tracking-tight hover:cursor-pointer pb-4'>
           Add to Roster
         </summary>
-        {/* Input row */}
         <CharacterForm />
         <MaterialSum />
       </details>

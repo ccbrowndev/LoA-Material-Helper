@@ -3,7 +3,7 @@ import { CharacterContext } from "../App";
 import AnimatingNumber from "../utils/animating-number";
 
 export default function MaterialSum() {
-  const { characterArray, setCharacterArray } = useContext(CharacterContext);
+  const { characterArray } = useContext(CharacterContext);
 
   return (
     <div className='flex justify-between'>
@@ -31,9 +31,12 @@ export default function MaterialSum() {
         Total Leaps <br />
         <span className='sm:text-xl text-4xl font-extrabold'>
           <AnimatingNumber
+          //Returns guardian leapstones for all non-targeted characters and totalLeaps for the isTargeted character
             value={characterArray.reduce((acc, curr) => {
-              return acc + curr.totalMaterials.totalLeaps * curr.amount;
-            }, 0)}
+              if(curr.isTargeted) {
+                 return acc + curr.totalMaterials.chaosLeaps + (curr.totalMaterials.guardianLeaps * curr.amount);
+                 } else return acc + curr.totalMaterials.guardianLeaps * curr.amount;
+              } , 0)}
           />
         </span>
       </span>

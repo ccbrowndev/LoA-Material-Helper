@@ -11,28 +11,16 @@ export const CharacterContext = createContext({
   setCharacterArray: (characterArray: Character[]) => {},
 });
 
-export const targetContext = createContext({
-  targetCharacter: {} as Character,
-  setTargetCharacter: (character: Character) => {},
-});
-
 export default function App(): JSX.Element {
   const [characterArray, setCharacterArray] = useState<Character[]>([]);
-  const [targetCharacter, setTargetCharacter] = useState({
-    iLevel: {
-      number: 1325,
-    },
-  } as Character);
   return (
     <div className='max-w-5xl mx-auto px-4 pt-2 sm:px-2 lg:px-8'>
       <Settings />
       <Divider />
       <CharacterContext.Provider value={{ characterArray, setCharacterArray }}>
-        <targetContext.Provider value={{ targetCharacter, setTargetCharacter }}>
           <Roster />
           <Divider />
           <Goals />
-        </targetContext.Provider>
       </CharacterContext.Provider>
       <Footer />
     </div>

@@ -1,12 +1,10 @@
-import { Character } from "../types/character";
 import { MinusIcon, PlusIcon } from "@heroicons/react/solid";
-import { createContext, useContext, useState } from "react";
+import { useContext } from "react";
 import { CharacterContext } from "../App";
-import { targetContext } from "../App";
+import { Character } from "../types/character";
 
 export default function UserCharacter(character: Character) {
   const { characterArray, setCharacterArray } = useContext(CharacterContext);
-  const { targetCharacter, setTargetCharacter } = useContext(targetContext);
 
   const handleMinus = (amount: number, id: number) => {
     if (amount === 1) {
@@ -36,7 +34,7 @@ export default function UserCharacter(character: Character) {
     );
   };
 
-  //This function will pass in the character array and the id of the character to have their amount increased by 1
+  //This function will pass in the id of the character to have their amount increased by 1
   const handleIncrease = (id: number) => {
     setCharacterArray(
       characterArray.map((character) => {
@@ -56,7 +54,6 @@ export default function UserCharacter(character: Character) {
       characterArray.map((character) => {
         character.isTargeted = false;
         if (character.id === id) {
-          setTargetCharacter(character);
           return {
             ...character,
             isTargeted: !character.isTargeted,
@@ -130,7 +127,10 @@ export default function UserCharacter(character: Character) {
           Blues: {character.totalMaterials.totalBlues * character.amount}
         </div>
         <div>
-          Leaps: {character.totalMaterials.totalLeaps * character.amount}
+          {/* Display only the leaps applicable to the target using option chaining */}
+          Leaps: {character.isTargeted ? 
+          (character.totalMaterials.chaosLeaps + (character.totalMaterials.guardianLeaps * character.amount)) 
+          : (character.totalMaterials.guardianLeaps * character.amount)}
         </div>
         <div>
           Shards: {character.totalMaterials.totalShards * character.amount}
