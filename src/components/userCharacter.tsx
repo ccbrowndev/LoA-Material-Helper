@@ -69,7 +69,7 @@ export default function UserCharacter(character: Character) {
     <li
       key={character.id}
       className={`rounded-lg bg-white overflow-hidden ${
-        character.isTargeted ? 'bg-green-50' : ''
+        character.isTargeted ? 'bg-green-50 outline outline-green-400' : ''
       }`}
     >
       <div className="flex justify-between lg:justify-around space-x-11 sm:space-x-9">
