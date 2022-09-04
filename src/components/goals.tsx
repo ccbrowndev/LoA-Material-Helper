@@ -109,23 +109,23 @@ export default function Goals() {
   };
 
   return (
-    <div className="pb-6 sm:px-6 lg:px-8 h-96 text-white text-center">
+    <div className='pb-6 sm:px-6 lg:px-8 h-72 text-white text-center'>
       <details open>
-        <summary className="text-2xl font-bold tracking-tight hover:cursor-pointer pb-4">
+        <summary className='text-2xl font-bold tracking-tight hover:cursor-pointer pb-4'>
           Goals
         </summary>
         {
           <div>
-            <label className="">
+            <label>
               Select a goal
               <select
-                className="text-black"
+                className='text-black'
                 defaultValue={'custom'}
                 onChange={handleGoalSelection}
               >
-                <option value="20wep21">1340 Weapon +20 to +21</option>
-                <option value="1340alt1370">1340 Alt to 1370</option>
-                <option value="custom">Custom goal</option>
+                <option value='20wep21'>1340 Weapon +20 to +21</option>
+                <option value='1340alt1370'>1340 Alt to 1370</option>
+                <option value='custom'>Custom goal</option>
               </select>
             </label>
           </div>
@@ -134,70 +134,70 @@ export default function Goals() {
         <form
           className={`flex flex-row justify-center items-center py-5 space-x-7 sm:space-x-1`}
         >
-          <div className="relative border border-gray-300 rounded-md p-2 shadow-sm">
+          <div className='relative border border-gray-300 rounded-md p-2 shadow-sm'>
             <label
-              htmlFor="Reds"
-              className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium"
+              htmlFor='Reds'
+              className='absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium'
             >
               Reds
             </label>
             <input
-              type="text"
-              name="reds"
-              id="reds"
-              className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
-              placeholder="Number of Reds"
+              type='text'
+              name='reds'
+              id='reds'
+              className='block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm'
+              placeholder='Number of Reds'
               value={formInputs.reds || ''}
               onChange={handleChange}
             ></input>
           </div>
-          <div className="relative border border-gray-300 rounded-md p-2 shadow-sm">
+          <div className='relative border border-gray-300 rounded-md p-2 shadow-sm'>
             <label
-              htmlFor="Blues"
-              className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium"
+              htmlFor='Blues'
+              className='absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium'
             >
               Blues
             </label>
             <input
-              type="text"
-              name="blues"
-              id="blues"
-              className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
-              placeholder="Number of Blues"
+              type='text'
+              name='blues'
+              id='blues'
+              className='block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm'
+              placeholder='Number of Blues'
               value={formInputs.blues || ''}
               onChange={handleChange}
             ></input>
           </div>
-          <div className="relative border border-gray-300 rounded-md p-2 shadow-sm">
+          <div className='relative border border-gray-300 rounded-md p-2 shadow-sm'>
             <label
-              htmlFor="Leaps"
-              className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium"
+              htmlFor='Leaps'
+              className='absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium'
             >
               Leaps
             </label>
             <input
-              type="text"
-              name="leaps"
-              id="leaps"
-              className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
-              placeholder="Number of Leapstones"
+              type='text'
+              name='leaps'
+              id='leaps'
+              className='block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm'
+              placeholder='Number of Leapstones'
               value={formInputs.leaps || ''}
               onChange={handleChange}
             ></input>
           </div>
-          <div className="relative border border-gray-300 rounded-md p-2 shadow-sm">
+          <div className='relative border border-gray-300 rounded-md p-2 shadow-sm'>
             <label
-              htmlFor="Shards"
-              className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium"
+              htmlFor='Shards'
+              className='absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium'
             >
               Shards
             </label>
             <input
-              type="text"
-              name="shards"
-              id="shards"
-              className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
-              placeholder="Number of Shards"
+              type='text'
+              name='shards'
+              id='shards'
+              className='block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm'
+              placeholder='Number of Shards'
               value={formInputs.shards || ''}
               onChange={handleChange}
             ></input>
@@ -209,9 +209,9 @@ export default function Goals() {
           >
             <label>
               <input
-                type="button"
-                className="hover:cursor-pointer"
-                value="Add custom goal"
+                type='button'
+                className='hover:cursor-pointer'
+                value='Add custom goal'
                 onClick={() => {
                   setCustomGoalState('addClicked');
                   setGoal({
@@ -232,9 +232,9 @@ export default function Goals() {
           >
             <label>
               <input
-                type="button"
-                className="hover:cursor-pointer"
-                value="Remove owned materials"
+                type='button'
+                className='hover:cursor-pointer'
+                value='Remove owned materials'
                 onClick={handleRemoveMats}
               />
             </label>
