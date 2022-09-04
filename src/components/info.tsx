@@ -1,6 +1,23 @@
+import { useState } from 'react';
+import Help from './help';
+
 export default function Info() {
+  const [isShown, setIsShown] = useState(false);
+
+  const handleClick = () => {
+    setIsShown(!isShown);
+  };
   return (
     <div className=' pb-6 sm:px-6 lg:px-8 h-auto text-white text-center'>
+      <div className='flex absolute my-2 rounded-lg'>
+        <button
+          className='border px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-600 text-white font-bold'
+          onClick={handleClick}
+        >
+          Help
+        </button>
+      </div>
+      {isShown && <Help isShown={isShown} setIsShown={setIsShown} />}
       <details>
         <summary className='text-2xl font-bold tracking-tight hover:cursor-pointer'>
           App Info
