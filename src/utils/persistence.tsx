@@ -11,8 +11,8 @@ export function addToLocalStorage(key: string, value: Character | Goal) {
   if (!currentStringValue) {
     localStorage.setItem(key, JSON.stringify([value]));
   } else {
-    const currentObjectValue = JSON.parse(currentStringValue || '');
-    if (currentObjectValue !== '') {
+    const currentObjectValue = JSON.parse(currentStringValue || 'null');
+    if (currentObjectValue) {
       const newObjectValue = [...currentObjectValue, value];
       const newStringValue = JSON.stringify(newObjectValue);
       localStorage.setItem(key, newStringValue);
