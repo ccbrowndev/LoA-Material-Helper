@@ -10,10 +10,12 @@ import { addToLocalStorage } from '../utils/persistence';
 export const CharacterForm = () => {
   const { characterArray, setCharacterArray } = useContext(CharacterContext);
 
-  const [level, setLevel] = useState('');
-  const [amount, setAmount] = useState('1');
-  const [rested, setRested] = useState(false);
-
+  const [userInput, setUserInput] = useState({
+    level: '',
+    amount: '1',
+    rested: false,
+  });
+  
   const parent = useRef(null);
 
   function getMaterials(charLevel: number) {
@@ -44,17 +46,17 @@ export const CharacterForm = () => {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    const parsedLevel = convertToLevel(parseInt(level));
+    const parsedLevel = convertToLevel(parseInt(userInput.level));
     const cid = generateId();
     const mats = getMaterials(parsedLevel.number);
     const charToBeAdded: Character = {
       iLevel: parsedLevel,
-      amount: parseInt(amount),
-      rested: rested,
+      amount: parseInt(userInput.amount),
+      rested: userInput.rested,
       id: cid,
       isTargeted: characterArray.length === 0 ? true : false,
       //Characters operating on rested bonus earn 2/3rds the mats, floor function applied to keep display whole numbers
-      totalMaterials: rested
+      totalMaterials: userInput.rested
         ? {
             totalReds: Math.floor(mats.reds * (2 / 3)),
             totalBlues: Math.floor(mats.blues * (2 / 3)),
@@ -102,8 +104,8 @@ export const CharacterForm = () => {
             id="level"
             className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
             placeholder="1325+"
-            value={level}
-            onChange={(e) => setLevel(e.target.value.replace(/[^\d.]/g, ''))}
+            value={userInput.level}
+            onChange={(e) => setUserInput({ ...userInput, level: e.target.value.replace(/[^\d.]/g, '') })}
           />
         </div>
         <div className="relative border border-gray-300 rounded-md p-2 shadow-sm">
@@ -119,11 +121,8 @@ export const CharacterForm = () => {
             id="amount"
             className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
             placeholder="#"
-            value={amount}
-            onChange={(e) => {
-              const result = e.target.value.replace(/\D/g, '');
-              setAmount(result);
-            }}
+            value={userInput.amount}
+            onChange={(e) => setUserInput({ ...userInput, amount: e.target.value.replace(/\D/g, '') })}
           />
         </div>
         <div className="p-1">
@@ -133,7 +132,7 @@ export const CharacterForm = () => {
               className="ml-1"
               type="checkbox"
               about="Rested"
-              onChange={(e) => setRested(e.target.checked)}
+              onChange={(e) => setUserInput({ ...userInput, rested: e.target.checked })}
             />
           </label>
         </div>
