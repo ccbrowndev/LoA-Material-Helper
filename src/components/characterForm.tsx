@@ -15,7 +15,7 @@ export const CharacterForm = () => {
     amount: '1',
     rested: false,
   });
-  
+
   const parent = useRef(null);
 
   function getMaterials(charLevel: number) {
@@ -50,10 +50,11 @@ export const CharacterForm = () => {
     const cid = generateId();
     const mats = getMaterials(parsedLevel.number);
     const charToBeAdded: Character = {
+      id: cid,
+      // name: '',
       iLevel: parsedLevel,
       amount: parseInt(userInput.amount),
       rested: userInput.rested,
-      id: cid,
       isTargeted: characterArray.length === 0 ? true : false,
       //Characters operating on rested bonus earn 2/3rds the mats, floor function applied to keep display whole numbers
       totalMaterials: userInput.rested
@@ -89,72 +90,85 @@ export const CharacterForm = () => {
     <div>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-row justify-center items-center pb-5 space-x-7 sm:space-x-1"
+        className='flex flex-row justify-center items-center pb-5 space-x-7 sm:space-x-1'
       >
-        <div className="relative border border-gray-300 rounded-md p-2 shadow-sm">
+        <div className='relative border border-gray-300 rounded-md p-2 shadow-sm'>
           <label
-            htmlFor="Level"
-            className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium"
+            htmlFor='Level'
+            className='absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium'
           >
             iLevel
           </label>
           <input
-            type="text"
-            name="level"
-            id="level"
-            className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
-            placeholder="1325+"
+            type='text'
+            name='level'
+            id='level'
+            className='block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm'
+            placeholder='1325+'
             value={userInput.level}
-            onChange={(e) => setUserInput({ ...userInput, level: e.target.value.replace(/[^\d.]/g, '') })}
+            onChange={(e) =>
+              setUserInput({
+                ...userInput,
+                level: e.target.value.replace(/[^\d.]/g, ''),
+              })
+            }
           />
         </div>
-        <div className="relative border border-gray-300 rounded-md p-2 shadow-sm">
+        <div className='relative border border-gray-300 rounded-md p-2 shadow-sm'>
           <label
-            htmlFor="name"
-            className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium"
+            htmlFor='name'
+            className='absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium'
           >
             Amount
           </label>
           <input
-            type="text"
-            name="amount"
-            id="amount"
-            className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
-            placeholder="#"
+            type='text'
+            name='amount'
+            id='amount'
+            className='block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm'
+            placeholder='#'
             value={userInput.amount}
-            onChange={(e) => setUserInput({ ...userInput, amount: e.target.value.replace(/\D/g, '') })}
+            onChange={(e) =>
+              setUserInput({
+                ...userInput,
+                amount: e.target.value.replace(/\D/g, ''),
+              })
+            }
           />
         </div>
-        <div className="p-1">
+        <div className='p-1'>
           <label>
             Rested?
             <input
-              className="ml-1"
-              type="checkbox"
-              about="Rested"
-              onChange={(e) => setUserInput({ ...userInput, rested: e.target.checked })}
+              className='ml-1'
+              type='checkbox'
+              about='Rested'
+              onChange={(e) =>
+                setUserInput({ ...userInput, rested: e.target.checked })
+              }
             />
           </label>
         </div>
-        <div className="border px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-600 text-white font-bold">
+        <div className='border px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-600 text-white font-bold'>
           <label>
             <input
-              type="submit"
-              className="hover:cursor-pointer"
-              value="Submit"
+              type='submit'
+              className='hover:cursor-pointer'
+              value='Submit'
             />
           </label>
         </div>
       </form>
       <ul
         ref={parent}
-        role="list"
-        className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        role='list'
+        className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'
       >
         {characterArray.map((character: Character) => (
           <UserCharacter
             key={character.id}
             id={character.id}
+            name={character.name}
             iLevel={character.iLevel}
             amount={character.amount ? character.amount : 1}
             rested={character.rested}

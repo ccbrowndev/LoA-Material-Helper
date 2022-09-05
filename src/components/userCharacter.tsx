@@ -1,10 +1,11 @@
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { CharacterContext } from '../App';
 import { Character } from '../types/character';
 
 export default function UserCharacter(character: Character) {
   const { characterArray, setCharacterArray } = useContext(CharacterContext);
+  // const [charName, setCharName] = useState(character.name);
 
   const handleMinus = (amount: number, id: number) => {
     if (amount === 1) {
@@ -65,6 +66,27 @@ export default function UserCharacter(character: Character) {
     setCharacterArray(newArray);
   };
 
+  //Name form input handlers
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    localStorage.setItem('localCharacters', JSON.stringify(characterArray));
+  };
+
+  const handleNameChange = (e: { target: { value: string } }, id: number) => {
+    // setCharName(e.target.value);
+    const newArray = characterArray.map((character) => {
+      if (character.id === id) {
+        return {
+          ...character,
+          name: e.target.value,
+        };
+      }
+      return character;
+    });
+    // localStorage.setItem('localCharacters', JSON.stringify(newArray));
+    setCharacterArray(newArray);
+  };
+
   return (
     <li
       key={character.id}
@@ -72,11 +94,11 @@ export default function UserCharacter(character: Character) {
         character.isTargeted ? 'bg-green-50 outline outline-green-400' : ''
       }`}
     >
-      <div className="flex justify-between lg:justify-around space-x-11 sm:space-x-9">
-        <div className="flex items-center sm:space-x-1 border-2 border-slate-700 p-1.5 -m-1.5 sm:-ml-2 rounded-lg lg:relative lg:right-3 ">
-          <span className="relative z-0 inline-flex shadow-sm rounded-md">
+      <div className='flex justify-between lg:justify-around space-x-11 sm:space-x-9'>
+        <div className='flex items-center sm:space-x-1 border-2 border-slate-700 p-1.5 pl-3 -m-1.5 sm:-ml-2 rounded-lg lg:relative lg:right-3 '>
+          <span className='relative z-0 inline-flex pt-1 space-x-1'>
             <span
-              className={`relative inline-flex items-center p-1 rounded-l-md border border-purple-300  text-xs font-medium text-white focus:z-10  ${
+              className={`relative inline-flex items-center px-1 rounded-full border border-purple-300  text-xs font-medium text-white focus:z-10  ${
                 character.iLevel.number <= 1355
                   ? 'bg-purple-700 border-purple-800 hover:bg-purple-500'
                   : ''
@@ -95,7 +117,7 @@ export default function UserCharacter(character: Character) {
               {character.iLevel.number}
             </span>
             <span
-              className={`-ml-px relative inline-flex items-center p-1 border  bg-white text-xs font-medium text-black  focus:z-10 focus:outline-none ${
+              className={`-ml-px relative inline-flex items-center px-2 border rounded-full bg-white text-xs font-medium text-black  focus:z-10 focus:outline-none ${
                 character.rested
                   ? 'bg-green-100 border-green-200 hover:bg-green-50 '
                   : 'bg-red-100 border-red-200 hover:bg-red-50'
@@ -104,7 +126,7 @@ export default function UserCharacter(character: Character) {
               {character.rested ? 'Rested' : 'Not Rested'}
             </span>
             <span
-              className={`-ml-px relative inline-flex items-center p-1 rounded-r-md text-xs font-medium text-black hover:bg-sky-50 focus:z-10 focus:outline-none bg-sky-100 border border-sky-200`}
+              className={`-ml-px relative inline-flex items-center px-1 rounded-full text-xs font-medium text-black hover:bg-sky-50 focus:z-10 focus:outline-none bg-sky-100 border border-sky-200`}
             >
               {character.amount}
             </span>
@@ -121,7 +143,23 @@ export default function UserCharacter(character: Character) {
           Goal Target
         </button>
       </div>
-      <div className="text-black py-1">
+      <div className='text-black py-2'>
+        {/* Optional Name input */}
+        {/* <div className='relative rounded-md p-2 my-1 shadow-sm'>
+          <form id='name' onSubmit={handleSubmit}>
+            <input
+              type='text'
+              name='name'
+              id='name'
+              className=' border-0 p-1 bg-inherit focus:bg-slate-100 placeholder-gray-300 text-center focus:ring-0 sm:text-sm rounded-sm'
+              placeholder='Optional Name'
+              value={charName}
+              onChange={(e) => handleNameChange(e, character.id)}
+            />
+            <div className='text-center'>Hello, {charName}!</div>
+          </form>
+        </div> */}
+        {/* End Optional Name input */}
         <div>Reds: {character.totalMaterials.totalReds * character.amount}</div>
         <div>
           Blues: {character.totalMaterials.totalBlues * character.amount}
@@ -138,23 +176,23 @@ export default function UserCharacter(character: Character) {
           Shards: {character.totalMaterials.totalShards * character.amount}
         </div>
       </div>
-      <div className="-mt-px flex divide-x border-t border-gray-500">
+      <div className='-mt-px flex divide-x border-t border-gray-500'>
         <button
           onClick={() => handleMinus(character.amount, character.id)}
-          className="w-0 flex-1 flex cursor-pointer"
+          className='w-0 flex-1 flex cursor-pointer'
         >
-          <div className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500 hover:bg-slate-300">
-            <MinusIcon className="w-5 h-5 text-gray-600" aria-hidden="true" />
-            <span className="ml-3">Remove</span>
+          <div className='relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500 hover:bg-slate-300'>
+            <MinusIcon className='w-5 h-5 text-gray-600' aria-hidden='true' />
+            <span className='ml-3'>Remove</span>
           </div>
         </button>
         <button
           onClick={() => handleIncrease(character.id)}
-          className="-ml-px w-0 flex-1 flex cursor-pointer"
+          className='-ml-px w-0 flex-1 flex cursor-pointer'
         >
-          <div className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-600 hover:bg-slate-300">
-            <PlusIcon className="w-5 h-5 text-gray-600" aria-hidden="true" />
-            <span className="ml-3">Add</span>
+          <div className='relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-600 hover:bg-slate-300'>
+            <PlusIcon className='w-5 h-5 text-gray-600' aria-hidden='true' />
+            <span className='ml-3'>Add</span>
           </div>
         </button>
       </div>
