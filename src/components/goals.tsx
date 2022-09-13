@@ -163,14 +163,14 @@ export default function Goals() {
   };
 
   return (
-    <div className="pb-6 sm:px-6 lg:px-8 h-96 text-white text-center">
+    <div className="pb-6 sm:px-6 lg:px-8 h-72 text-white text-center">
       <details open>
         <summary className="text-2xl font-bold tracking-tight hover:cursor-pointer pb-4">
           Goals
         </summary>
         {
           <div>
-            <label className="">
+            <label>
               Select a goal
               <select className="text-black" onChange={handleGoalSelection}>
                 {

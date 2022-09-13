@@ -1,5 +1,5 @@
 import Divider from './components/divider';
-import Settings from './components/settings';
+import Info from './components/info';
 import Footer from './components/footer';
 import Goals from './components/goals';
 import Roster from './components/roster';
@@ -28,8 +28,8 @@ export default function App(): JSX.Element {
   }, []);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 pt-2 sm:px-2 lg:px-8">
-      <Settings />
+    <div className='max-w-5xl mx-auto px-4 pt-2 sm:px-2 lg:px-8'>
+      <Info />
       <Divider />
       <CharacterContext.Provider value={{ characterArray, setCharacterArray }}>
         <Roster />

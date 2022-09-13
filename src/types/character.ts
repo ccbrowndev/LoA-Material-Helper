@@ -4,6 +4,7 @@ export type Level = {
 
 export type Character = {
   id: number;
+  name?: string;
   iLevel: Level;
   amount: number;
   rested: boolean;
