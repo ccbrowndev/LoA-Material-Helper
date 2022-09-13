@@ -19,3 +19,8 @@ export function addToLocalStorage(key: string, value: Character | Goal) {
     }
   }
 }
+
+//This function will generate a unique random id for each character.
+export const generateId = () => {
+  return Math.floor(Math.random() * 1000000);
+};

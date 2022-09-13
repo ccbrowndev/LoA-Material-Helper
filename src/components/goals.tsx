@@ -1,27 +1,46 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { CharacterContext } from '../App';
 import { Character } from '../types/character';
 import { Goal } from '../types/goal';
 import { goalData } from '../utils/goalData';
+import { addToLocalStorage, generateId } from '../utils/persistence';
 
 export default function Goals() {
-  const defaultGoal: Goal = {
-    name: 'custom',
-    redsRequired: 0,
+  const defaultGoal = {
+    id: '1340_20wep21',
+    name: '1340 Weapon +20 to +21',
+    redsRequired: 22716,
     bluesRequired: 0,
-    leapsRequired: 0,
-    shardsRequired: 0,
+    leapsRequired: 595,
+    shardsRequired: 85502,
   };
 
   const { characterArray } = useContext(CharacterContext);
   const [goal, setGoal] = useState<Goal>(defaultGoal);
   const [customGoalState, setCustomGoalState] = useState('initial');
   const [formInputs, setFormInputs] = useState({
+    name: '',
     reds: '',
     blues: '',
     leaps: '',
     shards: '',
   });
+  const goalMap = goalData;
+
+  /*
+  Loads the user's goals if they exist in local storage
+  useEffect is given an empty dependency to run only 1 time
+  This prevents an infinite loop
+  */
+  useEffect(() => {
+    const getLocalGoalResult: string = localStorage.getItem('localGoals') || '';
+    if (getLocalGoalResult !== '') {
+      const localGoals: Goal[] = JSON.parse(getLocalGoalResult);
+      localGoals.map((g: Goal) => {
+        goalMap.set(g.id, g);
+      });
+    }
+  }, []);
 
   const handleChange = (event: { target: HTMLInputElement }) => {
     const name = event.target.name;
@@ -89,23 +108,58 @@ export default function Goals() {
   const handleGoalSelection = (event: { target: HTMLSelectElement }) => {
     setCustomGoalState('initial');
     setGoal(defaultGoal);
-    goalData.forEach((value, key) => {
-      if (key === event.target.value) setGoal(value);
+    goalMap.forEach((g) => {
+      if (event.target.value === g.id) setGoal(g);
     });
   };
 
-  //Used to determine button visibility for the goal form
-  const getGoalButtonVisibility = (buttonName: string) => {
-    if (goal.name === 'custom') {
-      if (
-        (customGoalState === 'initial' && buttonName === 'remove') ||
-        (customGoalState === 'addClicked' && buttonName === 'add')
-      ) {
-        return 'hidden';
-      } else return '';
+  const handleAddGoal = () => {
+    let checkedId = '';
+    let checkedName = '';
+    if (formInputs.name) {
+      checkedId = formInputs.name.replace(/\s/g, '');
+      checkedName = formInputs.name;
+    } else {
+      let customId = 'custom' + generateId();
+      checkedId = customId;
+      checkedName = customId;
     }
-    if (buttonName === 'add') return 'hidden';
-    return '';
+
+    let customGoal: Goal = {
+      id: checkedId,
+      name: checkedName,
+      redsRequired: parseInt(formInputs.reds),
+      bluesRequired: parseInt(formInputs.blues),
+      leapsRequired: parseInt(formInputs.leaps),
+      shardsRequired: parseInt(formInputs.shards),
+      isCustom: true,
+    };
+    addToLocalStorage('localGoals', customGoal);
+    setCustomGoalState('addClicked');
+    setGoal(customGoal);
+  };
+
+  const handleRemoveGoal = () => {};
+
+  //Used to determine button visibility for the goal form
+  const getGoalInputVisibility = (inputName: string) => {
+    if (inputName === 'addGoal') {
+      if (!(goal.name === 'custom' && customGoalState === 'initial'))
+        return 'hidden';
+    }
+
+    if (inputName === 'removeMats') {
+      if (goal.name === 'custom' && customGoalState === 'initial')
+        return 'hidden';
+    }
+
+    if (inputName === 'removeGoal') {
+      if (!goal.isCustom) return 'hidden';
+    }
+
+    if (inputName === 'goalName') {
+      if (!(goal.name === 'custom' || goal.isCustom)) return 'hidden';
+    }
   };
 
   return (
@@ -118,14 +172,15 @@ export default function Goals() {
           <div>
             <label className="">
               Select a goal
-              <select
-                className="text-black"
-                defaultValue={'custom'}
-                onChange={handleGoalSelection}
-              >
-                <option value="20wep21">1340 Weapon +20 to +21</option>
-                <option value="1340alt1370">1340 Alt to 1370</option>
-                <option value="custom">Custom goal</option>
+              <select className="text-black" onChange={handleGoalSelection}>
+                {
+                  //Because a map's forEach method causes issues, it must be converted to an array so the map method can be used
+                  [...goalMap].map(([id, g]) => (
+                    <option key={id} value={g.id}>
+                      {g.name}
+                    </option>
+                  ))
+                }
               </select>
             </label>
           </div>
@@ -134,6 +189,27 @@ export default function Goals() {
         <form
           className={`flex flex-row justify-center items-center py-5 space-x-7 sm:space-x-1`}
         >
+          <div
+            className={`relative border border-gray-300 rounded-md p-2 shadow-sm ${getGoalInputVisibility(
+              'goalName'
+            )}`}
+          >
+            <label
+              htmlFor="Name"
+              className="absolute -top-2 left-2 -mt-px inline-block px-1 bg-slate-800 text-xs font-medium"
+            >
+              Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              className="block w-full border-0 p-1 text-white bg-slate-800 focus:bg-slate-700 placeholder-gray-300 focus:ring-0 sm:text-sm rounded-sm"
+              placeholder="Goal name"
+              value={formInputs.name || ''}
+              onChange={handleChange}
+            ></input>
+          </div>
           <div className="relative border border-gray-300 rounded-md p-2 shadow-sm">
             <label
               htmlFor="Reds"
@@ -203,39 +279,44 @@ export default function Goals() {
             ></input>
           </div>
           <div
-            className={`border px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-600 text-white font-bold ${getGoalButtonVisibility(
-              'add'
+            className={`border px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-600 text-white font-bold ${getGoalInputVisibility(
+              'addGoal'
             )}`}
           >
             <label>
               <input
                 type="button"
                 className="hover:cursor-pointer"
-                value="Add custom goal"
-                onClick={() => {
-                  setCustomGoalState('addClicked');
-                  setGoal({
-                    name: 'custom',
-                    redsRequired: parseInt(formInputs.reds),
-                    bluesRequired: parseInt(formInputs.blues),
-                    leapsRequired: parseInt(formInputs.leaps),
-                    shardsRequired: parseInt(formInputs.shards),
-                  });
-                }}
+                value="Add goal"
+                onClick={handleAddGoal}
               />
             </label>
           </div>
           <div
-            className={`border px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-600 text-white font-bold ${getGoalButtonVisibility(
-              'remove'
+            className={`border px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-600 text-white font-bold ${getGoalInputVisibility(
+              'removeMats'
             )}`}
           >
             <label>
               <input
                 type="button"
                 className="hover:cursor-pointer"
-                value="Remove owned materials"
+                value="Remove mats"
                 onClick={handleRemoveMats}
+              />
+            </label>
+          </div>
+          <div
+            className={`border px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-600 text-white font-bold ${getGoalInputVisibility(
+              'removeGoal'
+            )}`}
+          >
+            <label>
+              <input
+                type="button"
+                className="hover:cursor-pointer"
+                value="Remove goal"
+                onClick={handleRemoveGoal}
               />
             </label>
           </div>
