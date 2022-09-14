@@ -27,20 +27,13 @@ export default function Goals() {
   });
   const goalMap = goalData;
 
-  /*
-  Loads the user's goals if they exist in local storage
-  useEffect is given an empty dependency to run only 1 time
-  This prevents an infinite loop
-  */
-  useEffect(() => {
-    const getLocalGoalResult: string = localStorage.getItem('localGoals') || '';
-    if (getLocalGoalResult !== '') {
-      const localGoals: Goal[] = JSON.parse(getLocalGoalResult);
-      localGoals.map((g: Goal) => {
-        goalMap.set(g.id, g);
-      });
-    }
-  }, []);
+  const getLocalGoalResult: string = localStorage.getItem('localGoals') || '';
+  if (getLocalGoalResult !== '') {
+    const localGoals: Goal[] = JSON.parse(getLocalGoalResult);
+    localGoals.map((g: Goal) => {
+      goalMap.set(g.id, g);
+    });
+  }
 
   const handleChange = (event: { target: HTMLInputElement }) => {
     const name = event.target.name;
@@ -139,7 +132,16 @@ export default function Goals() {
     setGoal(customGoal);
   };
 
-  const handleRemoveGoal = () => {};
+  const handleRemoveGoal = () => {
+    goalMap.delete(goal.name);
+    const getLocalGoalResult: string = localStorage.getItem('localGoals') || '';
+    if (getLocalGoalResult !== '') {
+      const localGoals: Goal[] = JSON.parse(getLocalGoalResult);
+      const newLocalGoals = localGoals.filter((g) => g.id !== goal.id);
+      localStorage.setItem('localGoals', JSON.stringify(newLocalGoals));
+    }
+    setGoal(defaultGoal);
+  };
 
   //Used to determine button visibility for the goal form
   const getGoalInputVisibility = (inputName: string) => {
