@@ -167,7 +167,6 @@ export const CharacterForm = () => {
           <UserCharacter
             key={character.id}
             id={character.id}
-            name={character.name}
             iLevel={character.iLevel}
             amount={character.amount ? character.amount : 1}
             rested={character.rested}

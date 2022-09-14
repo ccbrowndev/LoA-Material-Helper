@@ -28,7 +28,7 @@ const goalCustom: Goal = {
 };
 
 export const goalData = new Map([
-  [goal1340_20wep21.name, goal1340_20wep21],
-  [goal1340alt1370.name, goal1340alt1370],
-  [goalCustom.name, goalCustom],
+  [goal1340_20wep21.id, goal1340_20wep21],
+  [goal1340alt1370.id, goal1340alt1370],
+  [goalCustom.id, goalCustom],
 ]);
