@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useContext } from 'react';
 import { Character } from '../types/character';
-import { convertToLevel } from '../utils/levelConverter';
+import { convertToLevel } from '../utils/rosterUtils';
 import UserCharacter from './userCharacter';
 import autoAnimate from '@formkit/auto-animate';
 import { CharacterContext } from '../App';

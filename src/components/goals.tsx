@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { CharacterContext } from '../App';
-import { Character } from '../types/character';
 import { Goal } from '../types/goal';
 import { goalData } from '../utils/goalData';
 import { addToLocalStorage, generateId } from '../utils/persistence';
+import { getRosterMaterials } from '../utils/rosterUtils';
 
 export default function Goals() {
   const defaultGoal = {
@@ -51,26 +51,6 @@ export default function Goals() {
     setFormInputs((values) => ({ ...values, [name]: value }));
   };
 
-  const getRosterMats = (charList: Array<Character>) => {
-    let reds = 0;
-    let blues = 0;
-    let leaps = 0;
-    let shards = 0;
-
-    // the leaps returned need to be only guardian leapstones except for the targetted character. The shards should be 0 unless it's the targeted character.
-    charList.forEach((character) => {
-      reds += character.totalMaterials.totalReds;
-      blues += character.totalMaterials.totalBlues;
-      leaps += character.totalMaterials.guardianLeaps;
-      if (character.isTargeted) {
-        shards += character.totalMaterials.totalShards;
-        leaps += character.totalMaterials.chaosLeaps;
-      }
-    });
-
-    return { reds: reds, blues: blues, leaps: leaps, shards: shards };
-  };
-
   const handleRemoveMats = () => {
     //The max function is used here to prevent the materials in a goal from going negative.
     const newReds = Math.max(0, goal.redsRequired - parseInt(formInputs.reds));
@@ -100,11 +80,11 @@ export default function Goals() {
 
   //Finds the mat requirement that will take the longest and then returns that with ceiling applied
   const calcETA = (g: Goal) => {
-    const rosterMats = getRosterMats(characterArray);
-    const redRatio = g.redsRequired / rosterMats.reds;
-    const blueRatio = g.bluesRequired / rosterMats.blues;
-    const leapRatio = g.leapsRequired / rosterMats.leaps;
-    const shardRatio = g.shardsRequired / rosterMats.shards;
+    const rosterMats = getRosterMaterials(characterArray);
+    const redRatio = g.redsRequired / rosterMats.totalReds;
+    const blueRatio = g.bluesRequired / rosterMats.totalBlues;
+    const leapRatio = g.leapsRequired / rosterMats.totalLeaps;
+    const shardRatio = g.shardsRequired / rosterMats.totalShards;
 
     const highestRatio = Math.max(redRatio, blueRatio, leapRatio, shardRatio);
     return Math.ceil(highestRatio);

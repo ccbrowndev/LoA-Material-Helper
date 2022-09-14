@@ -1,5 +1,5 @@
 import { MinusIcon, PlusIcon } from '@heroicons/react/solid';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { CharacterContext } from '../App';
 import { Character } from '../types/character';
 
