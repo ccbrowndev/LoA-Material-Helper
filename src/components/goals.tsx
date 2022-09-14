@@ -27,6 +27,16 @@ export default function Goals() {
   });
   const goalMap = goalData;
 
+  const clearForm = () => {
+    setFormInputs({
+      name: '',
+      reds: '',
+      blues: '',
+      leaps: '',
+      shards: '',
+    });
+  };
+
   const getLocalGoalResult: string = localStorage.getItem('localGoals') || '';
   if (getLocalGoalResult !== '') {
     const localGoals: Goal[] = JSON.parse(getLocalGoalResult);
@@ -84,6 +94,8 @@ export default function Goals() {
       leapsRequired: newLeaps,
       shardsRequired: newShards,
     });
+
+    clearForm();
   };
 
   //Finds the mat requirement that will take the longest and then returns that with ceiling applied
@@ -104,6 +116,7 @@ export default function Goals() {
     goalMap.forEach((g) => {
       if (event.target.value === g.id) setGoal(g);
     });
+    clearForm();
   };
 
   const handleAddGoal = () => {
@@ -130,6 +143,7 @@ export default function Goals() {
     addToLocalStorage('localGoals', customGoal);
     setCustomGoalState('addClicked');
     setGoal(customGoal);
+    clearForm();
   };
 
   const handleRemoveGoal = () => {
@@ -141,6 +155,7 @@ export default function Goals() {
       localStorage.setItem('localGoals', JSON.stringify(newLocalGoals));
     }
     setGoal(defaultGoal);
+    clearForm();
   };
 
   //Used to determine button visibility for the goal form
