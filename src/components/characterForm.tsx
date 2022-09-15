@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useContext } from 'react';
 import { Character } from '../types/character';
-import { convertToLevel } from '../utils/levelConverter';
+import { convertToLevel } from '../utils/rosterUtils';
 import UserCharacter from './userCharacter';
 import autoAnimate from '@formkit/auto-animate';
 import { CharacterContext } from '../App';
@@ -18,7 +18,7 @@ export const CharacterForm = () => {
 
   const parent = useRef(null);
 
-  function getMaterials(charLevel: number) {
+  function getMaterials(charLevel: number, rested: boolean = false) {
     const materials = materialData.get(charLevel) || {
       chaosReds: 0,
       chaosBlues: 0,
@@ -29,11 +29,19 @@ export const CharacterForm = () => {
       guardianLeaps: 0,
     };
 
-    const reds = materials.chaosReds + materials.guardianReds;
-    const blues = materials.chaosBlues + materials.guardianBlues;
-    const chaosLeaps = materials.chaosLeaps;
-    const guardianLeaps = materials.guardianLeaps;
-    const shards = materials.shards;
+    let reds = materials.chaosReds + materials.guardianReds;
+    let blues = materials.chaosBlues + materials.guardianBlues;
+    let chaosLeaps = materials.chaosLeaps;
+    let guardianLeaps = materials.guardianLeaps;
+    let shards = materials.shards;
+
+    if (rested) {
+      reds = Math.floor(reds * (2 / 3));
+      blues = Math.floor(blues * (2 / 3));
+      chaosLeaps = Math.floor(chaosLeaps * (2 / 3));
+      guardianLeaps = Math.floor(guardianLeaps * (2 / 3));
+      shards = Math.floor(shards * (2 / 3));
+    }
 
     return {
       reds: reds,
@@ -48,7 +56,7 @@ export const CharacterForm = () => {
     e.preventDefault();
     const parsedLevel = convertToLevel(parseInt(userInput.level));
     const cid = generateId();
-    const mats = getMaterials(parsedLevel.number);
+    const mats = getMaterials(parsedLevel.number, userInput.rested);
     const charToBeAdded: Character = {
       id: cid,
       iLevel: parsedLevel,
@@ -56,21 +64,13 @@ export const CharacterForm = () => {
       rested: userInput.rested,
       isTargeted: characterArray.length === 0 ? true : false,
       //Characters operating on rested bonus earn 2/3rds the mats, floor function applied to keep display whole numbers
-      totalMaterials: userInput.rested
-        ? {
-            totalReds: Math.floor(mats.reds * (2 / 3)),
-            totalBlues: Math.floor(mats.blues * (2 / 3)),
-            guardianLeaps: Math.floor(mats.guardianLeaps * (2 / 3)),
-            chaosLeaps: Math.floor(mats.chaosLeaps * (2 / 3)),
-            totalShards: Math.floor(mats.shards * (2 / 3)),
-          }
-        : {
-            totalReds: mats.reds,
-            totalBlues: mats.blues,
-            guardianLeaps: mats.guardianLeaps,
-            chaosLeaps: mats.chaosLeaps,
-            totalShards: mats.shards,
-          },
+      totalMaterials: {
+        totalReds: mats.reds,
+        totalBlues: mats.blues,
+        guardianLeaps: mats.guardianLeaps,
+        chaosLeaps: mats.chaosLeaps,
+        totalShards: mats.shards,
+      },
     };
     addToLocalStorage('localCharacters', charToBeAdded);
     setCharacterArray([...characterArray, charToBeAdded]);
